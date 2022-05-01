@@ -19,6 +19,8 @@ target 'deckchips' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
   target 'deckchipsTests' do
     inherit! :complete
     # Pods for testing
