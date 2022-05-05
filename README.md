@@ -1,5 +1,6 @@
 ## Deck Chips
 Aplicativo para a dsiciplina de mobile
+
 Deck Chips Server: https://github.com/octaviomuller/deck-chips-server
 
 ## Integrantes
