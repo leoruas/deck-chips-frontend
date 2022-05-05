@@ -2,6 +2,8 @@ export default {
   login: {
     email_label: 'E-mail',
     password_label: 'Senha',
-    crate_account: 'Criar Conta',
+    create_account: 'Criar Conta',
+    join_as_guest: 'Entrar como convidado',
+    login: 'Entrar',
   },
 };

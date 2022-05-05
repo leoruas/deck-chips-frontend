@@ -1,3 +1,4 @@
+import { normalize } from '@shared/helpers/normalize-pixels';
 import React from 'react';
 import { View } from 'react-native';
 
@@ -7,7 +8,7 @@ type SpacerProps = {
 };
 
 const Spacer = ({ width = 0, height = 0 }: SpacerProps) => {
-  return <View style={{ width, height }} />;
+  return <View style={{ width: normalize(width), height: normalize(height) }} />;
 };
 
 export default Spacer;

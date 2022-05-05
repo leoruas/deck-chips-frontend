@@ -1,28 +1,26 @@
 import { createTheme, useTheme as useRestyleTheme } from '@shopify/restyle';
 import { typography } from './typography';
 import { colors } from './colors';
+import { normalize } from '@shared/helpers/normalize-pixels';
 
 export const theme = createTheme({
   colors,
   spacing: {
     none: 0,
-    xsmall: '1%',
-    small: '2%',
-    medium: '4%',
-    large: '10%',
-    xlarge: '15%',
+    small: normalize(6),
+    medium: normalize(12),
+    large: normalize(24),
+    xlarge: normalize(36),
 
-    xsm: '1%',
-    sm: '2%',
-    md: '4%',
-    lg: '10%',
-    xlg: '15%',
+    sm: normalize(6),
+    md: normalize(12),
+    lg: normalize(24),
+    xlg: normalize(36),
   },
   breakpoints: {
     smallPhone: 0,
-    phone: 375,
+    phone: 428,
   },
-  borderRadii: {},
   textVariants: typography,
 });
 
