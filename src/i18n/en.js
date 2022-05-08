@@ -1,4 +1,11 @@
 export default {
+  signup: {
+    deck_chips: 'DECK CHIPS',
+    email_label: 'E-mail',
+    password_label: 'Password',
+    already_have_account: 'Already have an account?',
+    create_account: 'Create Account',
+  },
   login: {
     deck_chips: 'DECK CHIPS',
     email_label: 'E-mail',

@@ -14,7 +14,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { FacebookLogoImage, GoogleLogoImage, ImageWrapper, LoginButton, LogoImage } from './styles';
 
 export default function Login() {
-  const { t } = useTranslation('login');
+  const { t } = useTranslation('signup');
   const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
@@ -42,21 +42,33 @@ export default function Login() {
 
           <Spacer height={20} />
 
+          <TextField value={email} onChangeText={setEmail} placeholder={t('password_label')} />
+
+          <Spacer height={20} />
+
           <LoginButton
             onPress={() => {
-              //TODO: implement email validation
+              //TODO: implement signup endpoint
               setIsLoading(true);
-
               setTimeout(() => {
                 setIsLoading(false);
-                if (!email.length) return;
-                navigation.navigate('LoginPassword', {
-                  email,
-                });
+                //TODO: navigate to home screen
+                // navigation.navigate('Home');
               }, 1500);
             }}>
-            <Text variant="button_label">{t('login')}</Text>
+            <Text variant="button_label">{t('create_account')}</Text>
           </LoginButton>
+
+          <Spacer height={20} />
+
+          <Text
+            style={{ textDecorationLine: 'underline' }}
+            textAlign="right"
+            onPress={() => {
+              navigation.navigate('Login');
+            }}>
+            {t('already_have_account')}
+          </Text>
 
           <Spacer height={50} />
 
@@ -80,26 +92,6 @@ export default function Login() {
               <FacebookLogoImage />
             </ImageWrapper>
           </Box>
-
-          <Spacer height={50} />
-
-          <Text
-            style={{ textDecorationLine: 'underline' }}
-            onPress={() => {
-              navigation.navigate('SignUp');
-            }}>
-            {t('create_account')}
-          </Text>
-
-          <Spacer height={15} />
-          <Text
-            style={{ textDecorationLine: 'underline' }}
-            onPress={() => {
-              //TODO: Add navigation to home page
-              console.log('Join As Guest');
-            }}>
-            {t('join_as_guest')}
-          </Text>
         </Box>
       </KeyboardAwareScrollView>
     </SafeAreaBox>
