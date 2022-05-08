@@ -1,6 +1,6 @@
 import React from 'react';
-import UnauthorizedRoutes from './Unauthorized.routes';
+import AuthRoutes from './Auth.routes';
 
 export default function Routes() {
-  return <UnauthorizedRoutes />;
+  return <AuthRoutes />;
 }

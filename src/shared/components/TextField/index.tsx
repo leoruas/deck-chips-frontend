@@ -9,7 +9,12 @@ export default function TextField({ ...props }: TextInputProps) {
     <TextInputWrapper>
       <TextInput
         placeholderTextColor={theme.colors.text_default}
-        style={{ fontSize: normalize(20), color: theme.colors.text_default }}
+        style={{
+          fontSize: normalize(27),
+          color: theme.colors.text_default,
+          fontFamily: 'Univers-Condensed',
+          letterSpacing: normalize(1),
+        }}
         {...props}
       />
     </TextInputWrapper>

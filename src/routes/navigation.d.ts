@@ -1,14 +1,7 @@
-import { AuthorizedStackParamList } from './Authorized.routes';
-import { FeedStackParamList } from './Feed.routes';
-import { HomeTabParamList } from './Home.routes';
-import { UnauthorizedStackParamList } from './Unauthorized.routes';
-import { ResponsableStackParamList } from './Responsable.routes';
+import { DefaultStackParamList } from './Default.routes';
+import { AuthStackParamList } from './Auth.routes';
 
-type NavigationRouteList = UnauthorizedStackParamList &
-  AuthorizedStackParamList &
-  HomeTabParamList &
-  FeedStackParamList &
-  ResponsableStackParamList;
+type NavigationRouteList = DefaultStackParamList & AuthStackParamList;
 
 declare global {
   namespace ReactNavigation {
