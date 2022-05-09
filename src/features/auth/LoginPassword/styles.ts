@@ -1,6 +1,5 @@
 import FastImage from 'react-native-fast-image';
 import styled from 'styled-components/native';
-// @ts-ignore
 import Logo from '@assets/images/chip-logo.png';
 import { getPixelValue } from '@shared/helpers/normalize-pixels';
 

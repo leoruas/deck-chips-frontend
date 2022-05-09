@@ -9,9 +9,11 @@ import TextField from '@shared/components/TextField';
 import { normalize } from '@shared/helpers/normalize-pixels';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StatusBar } from 'react-native';
+import { StatusBar, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LoginButton, LogoImage } from './styles';
+import ChevronLeftIcon from '@assets/icons/chevron-left.svg';
+import { useNavigation } from '@react-navigation/native';
 
 export type LoginPasswordProps = {
   email: string;
@@ -21,6 +23,7 @@ type PageProps = NativeStackScreenProps<AuthStackParamList, 'LoginPassword'>;
 
 export default function LoginPassword({ route }: PageProps) {
   const { t } = useTranslation('login_password');
+  const navigation = useNavigation();
   const { email } = route.params;
 
   return (
@@ -29,9 +32,21 @@ export default function LoginPassword({ route }: PageProps) {
 
       <KeyboardAwareScrollView style={{ flex: 1 }}>
         <Box mt="lg" px="xlg" pb="xlg" flex={1}>
-          <Text fontSize={normalize(50)} textAlign="center">
-            {t('deck_chips')}
-          </Text>
+          <Box flex={1} flexDirection="row" alignItems="center">
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <ChevronLeftIcon
+                width={normalize(50)}
+                height={normalize(50)}
+                fill={theme.colors.text_default}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{ flex: 1, marginRight: normalize(50) }}
+              textAlign="center"
+              fontSize={normalize(50)}>
+              {t('deck_chips')}
+            </Text>
+          </Box>
 
           <Spacer height={15} />
 
@@ -39,7 +54,7 @@ export default function LoginPassword({ route }: PageProps) {
 
           <Spacer height={30} />
 
-          <TextField value={email} editable={false} placeholder={t('email_label')} />
+          <TextField value={email} editable={false} />
 
           <Spacer height={20} />
 
