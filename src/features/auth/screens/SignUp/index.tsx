@@ -6,6 +6,7 @@ import Spacer from '@shared/components/layout/Spacer';
 import Loader from '@shared/components/Loader';
 import Text from '@shared/components/Text';
 import TextField from '@shared/components/TextField';
+import { useAuth } from '@shared/contexts/AuthContext';
 import { normalize } from '@shared/helpers/normalize-pixels';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +19,9 @@ export default function Login() {
   const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { setIsLoggedIn } = useAuth();
 
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
@@ -42,7 +45,11 @@ export default function Login() {
 
           <Spacer height={20} />
 
-          <TextField value={email} onChangeText={setEmail} placeholder={t('password_label')} />
+          <TextField
+            value={password}
+            onChangeText={setPassword}
+            placeholder={t('password_label')}
+          />
 
           <Spacer height={20} />
 
@@ -52,8 +59,8 @@ export default function Login() {
               setIsLoading(true);
               setTimeout(() => {
                 setIsLoading(false);
-                //TODO: navigate to home screen
-                // navigation.navigate('Home');
+                setIsLoggedIn(true);
+                navigation.navigate('Home');
               }, 1500);
             }}>
             <Text variant="button_label">{t('create_account')}</Text>

@@ -7,13 +7,15 @@ import Spacer from '@shared/components/layout/Spacer';
 import Text from '@shared/components/Text';
 import TextField from '@shared/components/TextField';
 import { normalize } from '@shared/helpers/normalize-pixels';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatusBar, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { LoginButton, LogoImage } from './styles';
 import ChevronLeftIcon from '@assets/icons/chevron-left.svg';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '@shared/contexts/AuthContext';
+import Loader from '@shared/components/Loader';
 
 export type LoginPasswordProps = {
   email: string;
@@ -26,9 +28,15 @@ export default function LoginPassword({ route }: PageProps) {
   const navigation = useNavigation();
   const { email } = route.params;
 
+  const [isLoading, setIsLoading] = useState(false);
+  const { setIsLoggedIn } = useAuth();
+
+  console.log(setIsLoading);
+
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
       <StatusBar backgroundColor={theme.colors.bg_primary} />
+      <Loader showLoader={isLoading} />
 
       <KeyboardAwareScrollView style={{ flex: 1 }}>
         <Box mt="lg" px="xlg" pb="xlg" flex={1}>
@@ -58,13 +66,13 @@ export default function LoginPassword({ route }: PageProps) {
 
           <Spacer height={20} />
 
-          <TextField placeholder={t('password_label')} />
+          <TextField secureTextEntry placeholder={t('password_label')} />
           <Spacer height={20} />
           <Text
             style={{ textDecorationLine: 'underline' }}
             textAlign="right"
             onPress={() => {
-              //TODO: Add navigation to home page
+              //TODO: Add forgot password
               console.log('Forgot Password');
             }}>
             {t('forgot_password')}
@@ -74,8 +82,14 @@ export default function LoginPassword({ route }: PageProps) {
 
           <LoginButton
             onPress={() => {
-              //TODO: Add navigation to home page
-              console.log('Login');
+              //TODO: Implement login
+              setIsLoading(true);
+
+              setTimeout(() => {
+                setIsLoading(false);
+                setIsLoggedIn(true);
+                navigation.navigate('Home');
+              }, 1500);
             }}>
             <Text variant="button_label">{t('login')}</Text>
           </LoginButton>

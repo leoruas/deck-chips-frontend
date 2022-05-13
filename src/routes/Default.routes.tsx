@@ -1,10 +1,17 @@
 import React from 'react';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from '@features/home/screens/Home';
 
-// export type DefaultStackParamList = {};
+export type DefaultStackParamList = {
+  Home: undefined;
+};
 
-// const Stack = createNativeStackNavigator<DefaultStackParamList>();
+const Stack = createNativeStackNavigator<DefaultStackParamList>();
 
 export default function DefaultRoutes() {
-  return <></>;
+  return (
+    <Stack.Navigator initialRouteName={'Home'} screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={Home} />
+    </Stack.Navigator>
+  );
 }

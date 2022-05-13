@@ -8,6 +8,7 @@ import Orientation from 'react-native-orientation-locker';
 
 import { theme } from './theme';
 import Routes from './routes';
+import { AuthProvider } from '@shared/contexts/AuthContext';
 
 const App = () => {
   useEffect(() => {
@@ -19,7 +20,9 @@ const App = () => {
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <RestyleThemeProvider theme={theme}>
           <StyledThemeProvider theme={theme}>
-            <Routes />
+            <AuthProvider>
+              <Routes />
+            </AuthProvider>
           </StyledThemeProvider>
         </RestyleThemeProvider>
       </SafeAreaProvider>

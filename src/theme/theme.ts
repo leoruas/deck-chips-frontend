@@ -7,11 +7,13 @@ export const theme = createTheme({
   colors,
   spacing: {
     none: 0,
+    xsmall: normalize(4),
     small: normalize(6),
     medium: normalize(12),
     large: normalize(24),
     xlarge: normalize(36),
 
+    xsm: normalize(4),
     sm: normalize(6),
     md: normalize(12),
     lg: normalize(24),

@@ -1,4 +1,7 @@
 export default {
+  shared: {
+    search: 'Pesquisar',
+  },
   signup: {
     deck_chips: 'DECK CHIPS',
     email_label: 'E-mail',
