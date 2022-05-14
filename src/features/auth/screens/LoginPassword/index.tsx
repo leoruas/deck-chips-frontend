@@ -16,6 +16,7 @@ import ChevronLeftIcon from '@assets/icons/chevron-left.svg';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '@shared/contexts/AuthContext';
 import Loader from '@shared/components/Loader';
+import GradientBox from '@shared/components/layout/GradientBox';
 
 export type LoginPasswordProps = {
   email: string;
@@ -31,15 +32,13 @@ export default function LoginPassword({ route }: PageProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { setIsLoggedIn } = useAuth();
 
-  console.log(setIsLoading);
-
   return (
-    <SafeAreaBox flex={1} bg="bg_primary">
+    <SafeAreaBox flex={1}>
       <StatusBar backgroundColor={theme.colors.bg_primary} />
       <Loader showLoader={isLoading} />
 
-      <KeyboardAwareScrollView style={{ flex: 1 }}>
-        <Box mt="lg" px="xlg" pb="xlg" flex={1}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+        <GradientBox px="xlg" pb="xlg">
           <Box flex={1} flexDirection="row" alignItems="center">
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <ChevronLeftIcon
@@ -93,7 +92,7 @@ export default function LoginPassword({ route }: PageProps) {
             }}>
             <Text variant="button_label">{t('login')}</Text>
           </LoginButton>
-        </Box>
+        </GradientBox>
       </KeyboardAwareScrollView>
     </SafeAreaBox>
   );

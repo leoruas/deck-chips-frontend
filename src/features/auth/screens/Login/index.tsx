@@ -1,6 +1,7 @@
 import { theme } from '@app/theme';
 import { useNavigation } from '@react-navigation/native';
 import { Box } from '@shared/components/layout/Box';
+import GradientBox from '@shared/components/layout/GradientBox';
 import { SafeAreaBox } from '@shared/components/layout/SafeAreaBox';
 import Spacer from '@shared/components/layout/Spacer';
 import Loader from '@shared/components/Loader';
@@ -21,13 +22,13 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <SafeAreaBox flex={1} bg="bg_primary">
+    <SafeAreaBox flex={1}>
       <StatusBar backgroundColor={theme.colors.bg_primary} />
 
       <Loader showLoader={isLoading} />
 
-      <KeyboardAwareScrollView style={{ flex: 1 }}>
-        <Box mt="lg" px="xlg" pb="xlg" flex={1}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+        <GradientBox px="xlg" pb="xlg">
           <Text fontSize={normalize(50)} textAlign="center">
             {t('deck_chips')}
           </Text>
@@ -100,7 +101,7 @@ export default function Login() {
             }}>
             {t('join_as_guest')}
           </Text>
-        </Box>
+        </GradientBox>
       </KeyboardAwareScrollView>
     </SafeAreaBox>
   );

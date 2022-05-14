@@ -14,36 +14,60 @@ import { Box } from '../layout/Box';
 
 type ButtonOptions = 'community' | 'decks' | 'filters';
 
-export type SearchBarProps = {
+type SearchBarProps = {
   showMenu?: boolean;
   rightButtons?: ButtonOptions[];
 };
 
-const buttons: { [key in ButtonOptions]: React.FC<SvgProps> } = {
-  community: props => <CommunityIcon {...props} />,
-  decks: props => <DecksIcon {...props} />,
-  filters: props => <FiltersIcon {...props} />,
-};
-
-const renderButton = (option: ButtonOptions) => {
-  // TODO: verificar keys repetidas
-  const IconButton = buttons[option];
-  return (
-    <TouchableOpacity>
-      <Box mx="xsm">
-        <IconButton
-          key={option}
-          width={normalize(30)}
-          height={normalize(30)}
-          fill={theme.colors.text_default}
-        />
-      </Box>
-    </TouchableOpacity>
-  );
+type SearchBarButtonProps = {
+  onPress: () => void;
+  component: React.FC<SvgProps>;
 };
 
 export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProps) {
   const { t } = useTranslation('shared');
+
+  const buttons: { [key in ButtonOptions]: SearchBarButtonProps } = {
+    community: {
+      onPress: () => {
+        // TODO: Add navigation
+        console.log('Community');
+      },
+      component: props => <CommunityIcon {...props} />,
+    },
+    decks: {
+      onPress: () => {
+        // TODO: Add navigation
+        console.log('Decks');
+      },
+      component: props => <DecksIcon {...props} />,
+    },
+    filters: {
+      onPress: () => {
+        // TODO: Add navigation
+        console.log('Filters');
+      },
+      component: props => <FiltersIcon {...props} />,
+    },
+  };
+
+  const renderButton = (option: ButtonOptions) => {
+    const IconButton = buttons[option].component;
+    const onPress = buttons[option].onPress;
+
+    return (
+      <TouchableOpacity onPress={onPress}>
+        <Box mx="xsm">
+          <IconButton
+            key={option}
+            width={normalize(30)}
+            height={normalize(30)}
+            fill={theme.colors.text_default}
+          />
+        </Box>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <TextInputWrapper>
