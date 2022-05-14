@@ -33,7 +33,7 @@ export default function LoginPassword({ route }: PageProps) {
   const { setIsLoggedIn } = useAuth();
 
   return (
-    <SafeAreaBox flex={1}>
+    <SafeAreaBox flex={1} bg="bg_primary">
       <StatusBar backgroundColor={theme.colors.bg_primary} />
       <Loader showLoader={isLoading} />
 
@@ -68,8 +68,7 @@ export default function LoginPassword({ route }: PageProps) {
           <TextField secureTextEntry placeholder={t('password_label')} />
           <Spacer height={20} />
           <Text
-            style={{ textDecorationLine: 'underline' }}
-            textAlign="right"
+            style={{ textDecorationLine: 'underline', alignSelf: 'flex-end' }}
             onPress={() => {
               //TODO: Add forgot password
               console.log('Forgot Password');

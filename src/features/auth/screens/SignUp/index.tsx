@@ -70,8 +70,7 @@ export default function Login() {
           <Spacer height={20} />
 
           <Text
-            style={{ textDecorationLine: 'underline' }}
-            textAlign="right"
+            style={{ textDecorationLine: 'underline', alignSelf: 'flex-end' }}
             onPress={() => {
               navigation.navigate('Login');
             }}>

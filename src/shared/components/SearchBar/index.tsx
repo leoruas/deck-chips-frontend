@@ -11,6 +11,7 @@ import DecksIcon from '@assets/icons/decks.svg';
 import FiltersIcon from '@assets/icons/filter.svg';
 import { SvgProps } from 'react-native-svg';
 import { Box } from '../layout/Box';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 type ButtonOptions = 'community' | 'decks' | 'filters';
 
@@ -26,6 +27,7 @@ type SearchBarButtonProps = {
 
 export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProps) {
   const { t } = useTranslation('shared');
+  const navigation = useNavigation();
 
   const buttons: { [key in ButtonOptions]: SearchBarButtonProps } = {
     community: {
@@ -69,15 +71,23 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
     );
   };
 
+  const onPressLeftButton = () => {
+    if (showMenu) {
+      navigation.dispatch(DrawerActions.openDrawer());
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <TextInputWrapper>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPressLeftButton}>
         {showMenu ? (
           <MenuIcon width={normalize(30)} height={normalize(30)} fill={theme.colors.text_default} />
         ) : (
           <ChevronLeftIcon
-            width={normalize(30)}
-            height={normalize(30)}
+            width={normalize(35)}
+            height={normalize(35)}
             fill={theme.colors.text_default}
           />
         )}

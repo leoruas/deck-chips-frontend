@@ -85,7 +85,7 @@ export default function Login() {
           <Spacer height={50} />
 
           <Text
-            style={{ textDecorationLine: 'underline' }}
+            style={{ textDecorationLine: 'underline', alignSelf: 'flex-start' }}
             onPress={() => {
               navigation.navigate('SignUp');
             }}>
@@ -94,7 +94,10 @@ export default function Login() {
 
           <Spacer height={15} />
           <Text
-            style={{ textDecorationLine: 'underline' }}
+            style={{
+              textDecorationLine: 'underline',
+              alignSelf: 'flex-start',
+            }}
             onPress={() => {
               //TODO: Add navigation to home page
               console.log('Join As Guest');
