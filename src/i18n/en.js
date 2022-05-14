@@ -23,4 +23,12 @@ export default {
     login: 'Login',
     forgot_password: 'Forgot Password?',
   },
+  home: {
+    my_account: 'My Account',
+    favorites: 'Favorites',
+    community: 'Community',
+    my_decks: 'My Decks',
+    settings: 'Settings',
+    log_out: 'LOG OUT',
+  },
 };

@@ -22,7 +22,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <SafeAreaBox flex={1}>
+    <SafeAreaBox flex={1} bg="bg_primary">
       <StatusBar backgroundColor={theme.colors.bg_primary} />
 
       <Loader showLoader={isLoading} />

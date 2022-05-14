@@ -13,7 +13,7 @@ export default function TextField({ ...props }: TextInputProps) {
           fontSize: normalize(27),
           color: theme.colors.text_default,
           fontFamily: 'Univers-Condensed',
-          letterSpacing: normalize(1),
+          letterSpacing: normalize(1.5),
         }}
         {...props}
       />

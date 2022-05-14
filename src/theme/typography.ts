@@ -5,12 +5,12 @@ export const typography = {
     fontSize: normalize(25),
     color: 'text_default',
     fontFamily: 'Univers-Condensed',
-    letterSpacing: normalize(1),
+    letterSpacing: normalize(1.5),
   },
   button_label: {
     fontSize: normalize(34),
     color: 'text_default',
     fontFamily: 'Univers-Condensed',
-    letterSpacing: normalize(1),
+    letterSpacing: normalize(1.5),
   },
 };

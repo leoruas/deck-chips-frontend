@@ -25,7 +25,7 @@ export default function Login() {
   const { setIsLoggedIn } = useAuth();
 
   return (
-    <SafeAreaBox flex={1}>
+    <SafeAreaBox flex={1} bg="bg_primary">
       <StatusBar backgroundColor={theme.colors.bg_primary} />
 
       <Loader showLoader={isLoading} />

@@ -101,7 +101,7 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
           fontSize: normalize(27),
           color: theme.colors.text_default,
           fontFamily: 'Univers-Condensed',
-          letterSpacing: normalize(1),
+          letterSpacing: normalize(1.5),
           marginHorizontal: normalize(8),
         }}
       />
