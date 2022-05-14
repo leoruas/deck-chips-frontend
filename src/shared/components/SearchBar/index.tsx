@@ -46,8 +46,7 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
     },
     filters: {
       onPress: () => {
-        // TODO: Add navigation
-        console.log('Filters');
+        navigation.getParent()?.dispatch(DrawerActions.openDrawer);
       },
       component: props => <FiltersIcon {...props} />,
     },

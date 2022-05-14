@@ -18,7 +18,7 @@ import GradientBox from '@shared/components/layout/GradientBox';
 import { useAuth } from '@shared/contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 
-export default function HomeDrawerComponent() {
+export default function DrawerMenu() {
   const { t } = useTranslation('home');
   const { setIsLoggedIn } = useAuth();
   const navigation = useNavigation();

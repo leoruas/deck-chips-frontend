@@ -2,27 +2,41 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import Home from '@features/home/screens/Home';
-import HomeDrawerComponent from '@features/home/components/HomeDrawerComponent';
+import DrawerMenu from '@shared/components/DrawerMenu';
+import DrawerFilters from '@shared/components/DrawerFilters';
 
-export type DrawerStackParamsList = {
-  HomeDrawer: undefined;
-};
+const LeftDrawer = createDrawerNavigator();
+const RightDrawer = createDrawerNavigator();
 
-const Drawer = createDrawerNavigator<DrawerStackParamsList>();
-
-export default function DrawerMyProfile() {
+const LeftDrawerScreen = () => {
   return (
-    <Drawer.Navigator
+    <LeftDrawer.Navigator
       screenOptions={{
         headerShown: false,
         drawerPosition: 'left',
         drawerStyle: {
           width: '65%',
         },
-        swipeEnabled: true,
       }}
-      drawerContent={() => <HomeDrawerComponent />}>
-      <Drawer.Screen name="HomeDrawer" component={Home} />
-    </Drawer.Navigator>
+      drawerContent={() => <DrawerMenu />}>
+      <LeftDrawer.Screen name="HomeLeftDrawer" component={Home} />
+    </LeftDrawer.Navigator>
+  );
+};
+
+export default function RightDrawerScreen() {
+  return (
+    <RightDrawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerPosition: 'right',
+        drawerStyle: {
+          width: '65%',
+        },
+        swipeEnabled: false,
+      }}
+      drawerContent={() => <DrawerFilters />}>
+      <RightDrawer.Screen name="HomeDrawer" component={LeftDrawerScreen} />
+    </RightDrawer.Navigator>
   );
 }
