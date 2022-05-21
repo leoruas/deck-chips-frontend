@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <defs>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="56.0003497%" gradientTransform="translate(0.500000,0.500000),scale(1.000000,0.817143),translate(-0.500000,-0.500000)" id="radialGradient-1">
+            <stop stop-color="#FBECE3" offset="0%"></stop>
+            <stop stop-color="#E5D3C7" offset="33.83%"></stop>
+            <stop stop-color="#CFBAAB" offset="75.35%"></stop>
+            <stop stop-color="#C7B0A0" offset="99.3%"></stop>
+        </radialGradient>
+        <linearGradient x1="0%" y1="50%" x2="100.167692%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#398CF7" offset="0%"></stop>
+            <stop stop-color="#2476F2" offset="58.3%"></stop>
+            <stop stop-color="#1A6BF0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Element/Icon/Rarity/Rare" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="rare" transform="translate(3.660000, 2.000000)" fill-rule="nonzero">
+            <polygon id="Path" fill="url(#radialGradient-1)" points="8.28571429 0 0.114285714 9.88571429 8.17142857 20 16.4571429 9.88571429"></polygon>
+            <polygon id="XMLID_5_" stroke="#365181" fill="url(#linearGradient-2)" points="13.8285714 9.82857143 8.17142857 16.6857143 2.68571429 9.94285714 8.34285714 3.14285714"></polygon>
+            <g id="XMLID_118_" opacity="0.5" fill="#F7EBDE">
+                <polygon id="XMLID_4_" points="0.457142857 10.1142857 0.114285714 9.88571429 8.28571429 0 16.4571429 9.88571429 16.0571429 9.88571429 8.28571429 0.628571429"></polygon>
+            </g>
+            <g id="XMLID_116_" transform="translate(0.000000, 9.714286)" fill="#9F8D82">
+                <polygon id="XMLID_1_" points="8.17142857 10.2857143 0.114285714 0.171428571 0.628571429 0.171428571 8.17142857 9.65714286 16.0571429 0.171428571 16.4571429 0.171428571"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

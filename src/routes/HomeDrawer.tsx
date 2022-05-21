@@ -31,7 +31,7 @@ export default function RightDrawerScreen() {
         headerShown: false,
         drawerPosition: 'right',
         drawerStyle: {
-          width: '65%',
+          width: '75%',
         },
         swipeEnabled: false,
       }}

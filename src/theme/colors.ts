@@ -11,6 +11,22 @@ export const colors = {
 
   textfield_default: '#4A3D3B',
 
+  bandle_city: '#abba00',
+  bilgewater: '#b55921',
+  demacia: '#e0d2a9',
+  freljord: '#83d8f4',
+  ionia: '#c66d8c',
+  noxus: '#781717',
+  pnz: '#f7c063',
+  shadow_isles: '#088e6b',
+  shurima: '#cea321',
+  targon: '#5d59de',
+
+  type_color: '#6e668e',
+
+  light_blue: '#218bd1',
+  dark_blue: '#152e73',
+
   //opacity hexes
   opacity75: 'BF',
 };

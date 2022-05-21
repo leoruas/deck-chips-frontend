@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <defs>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="53.4802676%" gradientTransform="translate(0.500000,0.500000),scale(0.884615,1.000000),translate(-0.500000,-0.500000)" id="radialGradient-1">
+            <stop stop-color="#FBECE3" offset="0%"></stop>
+            <stop stop-color="#E5D3C7" offset="33.83%"></stop>
+            <stop stop-color="#CFBAAB" offset="75.35%"></stop>
+            <stop stop-color="#C7B0A0" offset="99.3%"></stop>
+        </radialGradient>
+        <linearGradient x1="0.116775114%" y1="49.9998821%" x2="100.116642%" y2="49.9998821%" id="linearGradient-2">
+            <stop stop-color="#14C87A" offset="0%"></stop>
+            <stop stop-color="#0EBE63" offset="59.25%"></stop>
+            <stop stop-color="#0BB958" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Element/Icon/Rarity/Common" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="common" transform="translate(2.000000, 3.250000)" fill-rule="nonzero">
+            <polygon id="Path" fill="url(#radialGradient-1)" points="0.342857143 0.342857143 19.6571429 0.342857143 10.2857143 17.4285714"></polygon>
+            <polygon id="XMLID_10_" stroke="#295A3F" fill="url(#linearGradient-2)" points="10.1714286 13.2 3.71428571 2.11428571 16.2285714 2.11428571"></polygon>
+            <polygon id="XMLID_9_" fill="#F7EBDE" points="19.4285714 0.685714286 0.571428571 0.685714286 0.342857143 0.342857143 19.6571429 0.285714286"></polygon>
+            <polygon id="XMLID_6_" fill="#9F8D82" points="10.2857143 17.4285714 0.342857143 0.342857143 1.08571429 0.742857143 10.2857143 16.5714286 18.9714286 0.742857143 19.6571429 0.342857143"></polygon>
+        </g>
+    </g>
+</svg>

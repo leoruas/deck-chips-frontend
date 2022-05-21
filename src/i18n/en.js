@@ -1,6 +1,44 @@
 export default {
   shared: {
     search: 'Search',
+    filters: {
+      regions: 'Regions',
+      cost: 'Cost',
+      type: 'Type',
+      rarity: 'Rarity',
+      set: 'Set',
+    },
+    regions: {
+      bandle_city: 'Bandle City',
+      bilgewater: 'Bilgewater',
+      demacia: 'Demacia',
+      freljord: 'Freljord',
+      ionia: 'Ionia',
+      noxus: 'Noxus',
+      pnz: 'Piltover & Zaun',
+      shadow_isles: 'Shadow Isles',
+      shurima: 'Shurima',
+      targon: 'Targon',
+    },
+    types: {
+      follower: 'Follower',
+      champion: 'Champion',
+      spell: 'Spell',
+      landmark: 'Landmark',
+    },
+    rarities: {
+      common: 'Common',
+      rare: 'Rare',
+      epic: 'Epic',
+      champion: 'Champion',
+    },
+    sets: {
+      foundations: 'Foundations',
+      rising_tides: 'Rising Tides',
+      call_of_mountain: 'Call of The Mountain',
+      empires_of_ascended: 'Empires of The Ascended',
+      beyond_bandlewood: 'Beyond The Bandlewood',
+    },
   },
   signup: {
     deck_chips: 'DECK CHIPS',

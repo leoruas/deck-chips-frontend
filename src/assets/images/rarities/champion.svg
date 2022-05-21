@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <defs>
+        <radialGradient cx="50.0892308%" cy="49.9468571%" fx="50.0892308%" fy="49.9468571%" r="59.2830769%" gradientTransform="translate(0.500892,0.499469),scale(1.000000,0.742857),translate(-0.500892,-0.499469)" id="radialGradient-1">
+            <stop stop-color="#FBECE3" offset="0%"></stop>
+            <stop stop-color="#E1CEC1" offset="52.48%"></stop>
+            <stop stop-color="#C7B0A0" offset="99.3%"></stop>
+        </radialGradient>
+        <linearGradient x1="50.1348837%" y1="0.212017167%" x2="50.1348837%" y2="100.057511%" id="linearGradient-2">
+            <stop stop-color="#EDAA2B" offset="0%"></stop>
+            <stop stop-color="#EDA929" offset="3.532755%"></stop>
+            <stop stop-color="#E9960D" offset="64.74%"></stop>
+            <stop stop-color="#E78F02" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Element/Icon/Rarity/Champion" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="champion" transform="translate(4.100000, 2.000000)" fill-rule="nonzero">
+            <polygon id="XMLID_7_" fill="url(#radialGradient-1)" points="0.342857143 4.97142857 7.77142857 0 15.2 4.97142857 15.2 14.9714286 7.77142857 20 0.342857143 14.9714286"></polygon>
+            <polygon id="XMLID_6_" stroke="#72572E" fill="url(#linearGradient-2)" points="2.85714286 6.68571429 7.77142857 3.31428571 12.6857143 6.68571429 12.6857143 13.3142857 7.77142857 16.6285714 2.85714286 13.3142857"></polygon>
+            <g id="XMLID_11_" transform="translate(0.000000, 14.285714)" fill="#9F8D82">
+                <polygon id="XMLID_4_" points="7.77142857 5.71428571 0.342857143 0.685714286 0.342857143 0.171428571 7.77142857 5.2 15.2 0.171428571 15.2 0.685714286"></polygon>
+            </g>
+            <g id="XMLID_9_" opacity="0.5" fill="#F7EBDE">
+                <polygon id="XMLID_1_" points="15.2 5.48571429 7.77142857 0.514285714 0.342857143 5.48571429 0.342857143 4.97142857 7.77142857 0 15.2 4.97142857"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

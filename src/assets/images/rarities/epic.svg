@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <defs>
+        <radialGradient cx="50.0164706%" cy="49.9558282%" fx="50.0164706%" fy="49.9558282%" r="51.1690184%" gradientTransform="translate(0.500165,0.499558),scale(0.958824,1.000000),translate(-0.500165,-0.499558)" id="radialGradient-1">
+            <stop stop-color="#FBECE3" offset="0%"></stop>
+            <stop stop-color="#E5D3C7" offset="33.83%"></stop>
+            <stop stop-color="#CFBAAB" offset="75.35%"></stop>
+            <stop stop-color="#C7B0A0" offset="99.3%"></stop>
+        </radialGradient>
+        <linearGradient x1="49.8903766%" y1="-0.0620087336%" x2="49.8903766%" y2="99.9244541%" id="linearGradient-2">
+            <stop stop-color="#A833E6" offset="0%"></stop>
+            <stop stop-color="#9318D5" offset="62.35%"></stop>
+            <stop stop-color="#8B0DCF" offset="99.58%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Element/Icon/Rarity/Epic" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="epic" transform="translate(2.000000, 2.400000)" fill-rule="nonzero">
+            <polygon id="XMLID_6_" fill="url(#radialGradient-1)" points="19.7142857 11.4285714 9.88571429 18.7428571 0.285714286 11.4285714 3.77142857 0.114285714 15.6571429 0.114285714"></polygon>
+            <polygon id="XMLID_5_" stroke="#592677" fill="url(#linearGradient-2)" points="16.9142857 10.6857143 10 15.8285714 3.25714286 10.6857143 5.71428571 2.74285714 14.0571429 2.74285714"></polygon>
+            <g id="XMLID_10_" opacity="0.5" transform="translate(3.428571, 0.000000)" fill="#F7EBDE">
+                <polygon id="XMLID_4_" points="12.4 0.617142857 0.228571429 0.617142857 0.342857143 0.137142857 12.2285714 0.137142857"></polygon>
+            </g>
+            <g id="XMLID_8_" transform="translate(0.000000, 10.857143)" fill="#9F8D82">
+                <polygon id="XMLID_1_" points="9.82857143 7.88571429 0.285714286 0.571428571 0.4 0.228571429 9.82857143 7.42857143 19.6 0.228571429 19.7142857 0.571428571"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
