@@ -39,6 +39,10 @@ export default {
       empires_of_ascended: 'Impérios dos Ascendentes',
       beyond_bandlewood: 'Além do Bandobosque',
     },
+    card_info: {
+      keywords: 'Palavras Chave',
+      description: 'Descrição',
+    },
   },
   signup: {
     deck_chips: 'DECK CHIPS',

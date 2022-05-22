@@ -10,6 +10,7 @@ import { theme } from './theme';
 import Routes from './routes';
 import { AuthProvider } from '@shared/contexts/AuthContext';
 import { FilterProvider } from '@shared/contexts/FilterContext';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 const App = () => {
   useEffect(() => {
@@ -23,7 +24,9 @@ const App = () => {
           <StyledThemeProvider theme={theme}>
             <AuthProvider>
               <FilterProvider>
-                <Routes />
+                <BottomSheetModalProvider>
+                  <Routes />
+                </BottomSheetModalProvider>
               </FilterProvider>
             </AuthProvider>
           </StyledThemeProvider>

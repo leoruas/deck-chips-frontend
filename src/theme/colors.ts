@@ -22,11 +22,14 @@ export const colors = {
   shurima: '#cea321',
   targon: '#5d59de',
 
-  type_color: '#6e668e',
+  type_color: '#a7a4b3',
 
   light_blue: '#218bd1',
   dark_blue: '#152e73',
 
+  favorite: '#F7D74E',
+
   //opacity hexes
+  transparent: 'transparent',
   opacity75: 'BF',
 };

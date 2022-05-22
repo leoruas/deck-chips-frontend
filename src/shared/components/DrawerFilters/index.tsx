@@ -3,28 +3,6 @@ import Text from '@shared/components/Text';
 import GradientBox from '@shared/components/layout/GradientBox';
 import { useTranslation } from 'react-i18next';
 import Divider from '@shared/components/layout/Divider';
-import { SvgProps } from 'react-native-svg';
-
-import BandleCityIcon from '@assets/images/regions/bandle_city.svg';
-import BilgewaterIcon from '@assets/images/regions/bilgewater.svg';
-import DemaciaIcon from '@assets/images/regions/demacia.svg';
-import FreljordIcon from '@assets/images/regions/freljord.svg';
-import IoniaIcon from '@assets/images/regions/ionia.svg';
-import NoxusIcon from '@assets/images/regions/noxus.svg';
-import PnzIcon from '@assets/images/regions/pnz.svg';
-import ShadowIslesIcon from '@assets/images/regions/shadow_isles.svg';
-import ShurimaIcon from '@assets/images/regions/shurima.svg';
-import TargonIcon from '@assets/images/regions/targon.svg';
-
-import FollowerIcon from '@assets/images/types/follower.svg';
-import ChampionTypeIcon from '@assets/images/types/champion.svg';
-import SpellIcon from '@assets/images/types/spell.svg';
-import LandmarkIcon from '@assets/images/types/landmark.svg';
-
-import CommonIcon from '@assets/images/rarities/common.svg';
-import RareIcon from '@assets/images/rarities/rare.svg';
-import EpicIcon from '@assets/images/rarities/epic.svg';
-import ChampionIcon from '@assets/images/rarities/champion.svg';
 
 import FoundationsImage from '@assets/images/sets/foundations.png';
 import RisingTidesImage from '@assets/images/sets/rising_tides.png';
@@ -39,13 +17,23 @@ import { normalize } from '@shared/helpers/normalize-pixels';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import { CostCircle, SetImage } from './styles';
 import { BoxProps } from '@shopify/restyle';
+import {
+  RarityType,
+  raritiesKeys,
+  RegionType,
+  regionsKeys,
+  SetType,
+  setsKeys,
+  CardType,
+  typesKeys,
+} from '@shared/types/filters.types';
+import { getRarityInfo, getRegionInfo, getTypeInfo } from '@shared/helpers/get-filter-info';
 
 export default function DrawerFilters() {
   const { t } = useTranslation('shared');
 
   return (
     <ScrollView style={{ flex: 1 }} nestedScrollEnabled>
-      {/* ver se pointerEvents remove problema com nested scroll */}
       <Box flex={1} pointerEvents="none">
         <GradientBox flex={1} py="lg" px="md">
           <Text variant="title">{t('filters.regions')}</Text>
@@ -66,7 +54,6 @@ export default function DrawerFilters() {
 
           <Text variant="title">{t('filters.set')}</Text>
           {RenderSets()}
-          <Divider my="lg" />
         </GradientBox>
       </Box>
     </ScrollView>
@@ -90,72 +77,12 @@ const FilterItem = ({ icon, label, fontSize = 25, ...props }: FilterItemProps) =
   );
 };
 
-type RenderFilterItemProps = {
-  icon: React.FC<SvgProps>;
-  label: string;
-};
-
 const RenderRegions = () => {
   const { t } = useTranslation('shared');
-  const regions = [
-    'bandle_city',
-    'bilgewater',
-    'demacia',
-    'freljord',
-    'ionia',
-    'noxus',
-    'pnz',
-    'shadow_isles',
-    'shurima',
-    'targon',
-  ] as const;
-  type Regions = typeof regions[number];
 
-  const regionItems: { [key in Regions]: RenderFilterItemProps } = {
-    bandle_city: {
-      icon: props => <BandleCityIcon {...props} />,
-      label: t('regions.bandle_city'),
-    },
-    bilgewater: {
-      icon: props => <BilgewaterIcon {...props} />,
-      label: t('regions.bilgewater'),
-    },
-    demacia: {
-      icon: props => <DemaciaIcon {...props} />,
-      label: t('regions.demacia'),
-    },
-    freljord: {
-      icon: props => <FreljordIcon {...props} />,
-      label: t('regions.freljord'),
-    },
-    ionia: {
-      icon: props => <IoniaIcon {...props} />,
-      label: t('regions.ionia'),
-    },
-    noxus: {
-      icon: props => <NoxusIcon {...props} />,
-      label: t('regions.noxus'),
-    },
-    pnz: {
-      icon: props => <PnzIcon {...props} />,
-      label: t('regions.pnz'),
-    },
-    shadow_isles: {
-      icon: props => <ShadowIslesIcon {...props} />,
-      label: t('regions.shadow_isles'),
-    },
-    shurima: {
-      icon: props => <ShurimaIcon {...props} />,
-      label: t('regions.shurima'),
-    },
-    targon: {
-      icon: props => <TargonIcon {...props} />,
-      label: t('regions.targon'),
-    },
-  };
-
-  const renderItem = (key: Regions) => {
-    const Icon = regionItems[key].icon;
+  const renderItem = (key: RegionType) => {
+    const region = getRegionInfo(key, t);
+    const Icon = region.icon;
 
     return (
       <TouchableOpacity
@@ -164,7 +91,7 @@ const RenderRegions = () => {
           console.log('Region', key);
         }}>
         <FilterItem
-          label={regionItems[key].label}
+          label={region.label}
           icon={
             <Icon key={key} width={normalize(30)} height={normalize(30)} fill={theme.colors[key]} />
           }
@@ -173,7 +100,7 @@ const RenderRegions = () => {
     );
   };
 
-  const data = Array.from(regions);
+  const data = Array.from(regionsKeys);
 
   return (
     <Box mt="sm">
@@ -212,30 +139,10 @@ const RenderCosts = () => {
 
 const RenderTypes = () => {
   const { t } = useTranslation('shared');
-  const types = ['follower', 'champion', 'spell', 'landmark'] as const;
-  type Types = typeof types[number];
 
-  const typeItems: { [key in Types]: RenderFilterItemProps } = {
-    follower: {
-      icon: props => <FollowerIcon {...props} />,
-      label: t('types.follower'),
-    },
-    champion: {
-      icon: props => <ChampionTypeIcon {...props} />,
-      label: t('types.champion'),
-    },
-    spell: {
-      icon: props => <SpellIcon {...props} />,
-      label: t('types.spell'),
-    },
-    landmark: {
-      icon: props => <LandmarkIcon {...props} />,
-      label: t('types.landmark'),
-    },
-  };
-
-  const renderItem = (key: Types) => {
-    const Icon = typeItems[key].icon;
+  const renderItem = (key: CardType) => {
+    const type = getTypeInfo(key, t);
+    const Icon = type.icon;
 
     return (
       <TouchableOpacity
@@ -244,7 +151,7 @@ const RenderTypes = () => {
           console.log('Type', key);
         }}>
         <FilterItem
-          label={typeItems[key].label}
+          label={type.label}
           icon={
             <Icon
               key={key}
@@ -258,7 +165,7 @@ const RenderTypes = () => {
     );
   };
 
-  const data = Array.from(types);
+  const data = Array.from(typesKeys);
 
   return (
     <Box mt="md">
@@ -275,30 +182,10 @@ const RenderTypes = () => {
 
 const RenderRarities = () => {
   const { t } = useTranslation('shared');
-  const rarities = ['common', 'rare', 'epic', 'champion'] as const;
-  type Rarities = typeof rarities[number];
 
-  const rarityItems: { [key in Rarities]: RenderFilterItemProps } = {
-    common: {
-      icon: props => <CommonIcon {...props} />,
-      label: t('rarities.common'),
-    },
-    rare: {
-      icon: props => <RareIcon {...props} />,
-      label: t('rarities.rare'),
-    },
-    epic: {
-      icon: props => <EpicIcon {...props} />,
-      label: t('rarities.epic'),
-    },
-    champion: {
-      icon: props => <ChampionIcon {...props} />,
-      label: t('rarities.champion'),
-    },
-  };
-
-  const renderItem = (key: Rarities) => {
-    const Icon = rarityItems[key].icon;
+  const renderItem = (key: RarityType) => {
+    const rarity = getRarityInfo(key, t);
+    const Icon = rarity.icon;
 
     return (
       <TouchableOpacity
@@ -307,7 +194,7 @@ const RenderRarities = () => {
           console.log('Type', key);
         }}>
         <FilterItem
-          label={rarityItems[key].label}
+          label={rarity.label}
           icon={
             <Icon
               key={key}
@@ -321,7 +208,7 @@ const RenderRarities = () => {
     );
   };
 
-  const data = Array.from(rarities);
+  const data = Array.from(raritiesKeys);
 
   return (
     <Box mt="md">
@@ -343,16 +230,8 @@ type SetsItemProps = {
 
 const RenderSets = () => {
   const { t } = useTranslation('shared');
-  const sets = [
-    'foundations',
-    'rising_tides',
-    'call_of_mountain',
-    'empires_of_ascended',
-    'beyond_bandlewood',
-  ] as const;
-  type Sets = typeof sets[number];
 
-  const setsItems: { [key in Sets]: SetsItemProps } = {
+  const setsItems: { [key in SetType]: SetsItemProps } = {
     foundations: {
       source: FoundationsImage,
       label: t('sets.foundations'),
@@ -375,7 +254,7 @@ const RenderSets = () => {
     },
   };
 
-  const renderItem = (key: Sets) => {
+  const renderItem = (key: SetType) => {
     const { source } = setsItems[key];
 
     return (
@@ -394,7 +273,7 @@ const RenderSets = () => {
     );
   };
 
-  const data = Array.from(sets);
+  const data = Array.from(setsKeys);
 
   return (
     <Box mt="md">

@@ -39,6 +39,10 @@ export default {
       empires_of_ascended: 'Empires of The Ascended',
       beyond_bandlewood: 'Beyond The Bandlewood',
     },
+    card_info: {
+      keywords: 'Keywords',
+      description: 'Description',
+    },
   },
   signup: {
     deck_chips: 'DECK CHIPS',
