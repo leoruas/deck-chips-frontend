@@ -29,6 +29,8 @@ export const colors = {
 
   favorite: '#F7D74E',
 
+  tabbar_line: '#736247',
+
   //opacity hexes
   transparent: 'transparent',
   opacity75: 'BF',

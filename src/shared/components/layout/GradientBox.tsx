@@ -13,7 +13,7 @@ export default function GradientBox({ children, ...props }: GradientBoxProps) {
     <LinearGradient
       style={{ flex: 1 }}
       colors={[theme.colors.bg_gradient_from, theme.colors.bg_gradient_to]}>
-      <Box flex={1} bg="bg_primary" px="md" pt="lg" {...props}>
+      <Box flex={1} bg="bg_primary" {...props}>
         {children}
       </Box>
     </LinearGradient>

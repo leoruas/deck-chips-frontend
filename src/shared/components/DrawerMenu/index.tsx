@@ -65,6 +65,7 @@ export default function DrawerMenu() {
 
 const RenderDrawerItems = () => {
   const { t } = useTranslation('home');
+  const navigation = useNavigation();
 
   type DrawerItemKey = 'myAccount' | 'favorites' | 'community' | 'myDecks' | 'settings';
   interface IDrawerItem {
@@ -92,8 +93,7 @@ const RenderDrawerItems = () => {
     },
     favorites: {
       onPress: () => {
-        // TODO: Add navigation
-        console.log('Favorites');
+        navigation.navigate('MyFavorites');
       },
       icon: props => <StarIcon {...props} />,
       label: t('favorites'),

@@ -73,4 +73,9 @@ export default {
     settings: 'Configurações',
     log_out: 'SAIR',
   },
+  favorites: {
+    title: 'FAVORITOS',
+    cards: 'CARTAS',
+    decks: 'DECKS',
+  },
 };
