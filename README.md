@@ -19,6 +19,15 @@ Deck Chips Server: https://github.com/octaviomuller/deck-chips-server
   - CP110TIN2
   - PA038TIN3
 
+## Principais Funcionalidades
+- Listagem de cartas com filtros
+- Informações de uma carta e cartas relacionadas
+- Criação e edição de decks
+- Informações de decks
+- Importação e exportação de decks
+- Compartilhamento de decks em comunidade
+
+
 ## Telas no App
 ### Home
 - Tela inicial
