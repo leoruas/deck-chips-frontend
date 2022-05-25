@@ -26,6 +26,8 @@ export const colors = {
 
   light_blue: '#218bd1',
   dark_blue: '#152e73',
+  light_grey: '#B9B9B9',
+  dark_grey: '#373737',
 
   favorite: '#F7D74E',
 

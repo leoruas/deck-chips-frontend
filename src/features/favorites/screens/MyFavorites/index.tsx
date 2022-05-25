@@ -26,7 +26,11 @@ export default function MyFavorites() {
         {/* @ts-ignore */}
         <Tab.Navigator
           screenOptions={({ route }) => ({
-            tabBarLabel: () => <Text numberOfLines={1}>{route.name.toUpperCase()}</Text>,
+            tabBarLabel: () => (
+              <Text numberOfLines={1} fontSize={normalize(30)}>
+                {route.name.toUpperCase()}
+              </Text>
+            ),
             tabBarStyle: {
               elevation: 0,
               marginHorizontal: normalize(24),

@@ -95,7 +95,9 @@ const CardModal: ForwardRefRenderFunction<BottomSheetModal, CardModalProps> = ({
             <Spacer height={20} />
             <Box flexDirection="row" flex={1}>
               <CardInfoItem type="region" regions={card?.regions} />
-              <CardInfoItem type="type" cardType={card?.type} />
+              <Box mx="md">
+                <CardInfoItem type="type" cardType={card?.type} />
+              </Box>
               <CardInfoItem type="rarity" rarity={card?.rarity} />
             </Box>
 

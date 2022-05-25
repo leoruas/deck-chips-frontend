@@ -9,11 +9,13 @@ import MenuIcon from '@assets/icons/menu.svg';
 import CommunityIcon from '@assets/icons/community.svg';
 import DecksIcon from '@assets/icons/decks.svg';
 import FiltersIcon from '@assets/icons/filter.svg';
+import HomeIcon from '@assets/icons/home-outline.svg';
+import DecksMenuIcon from '@assets/icons/dots-vertical.svg';
 import { SvgProps } from 'react-native-svg';
 import { Box } from '../layout/Box';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 
-type ButtonOptions = 'community' | 'decks' | 'filters';
+type ButtonOptions = 'community' | 'decks' | 'filters' | 'home' | 'decks_menu';
 
 type SearchBarProps = {
   showMenu?: boolean;
@@ -39,8 +41,7 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
     },
     decks: {
       onPress: () => {
-        // TODO: Add navigation
-        console.log('Decks');
+        navigation.navigate('MyDecks');
       },
       component: props => <DecksIcon {...props} />,
     },
@@ -49,6 +50,19 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
         navigation.getParent()?.dispatch(DrawerActions.openDrawer);
       },
       component: props => <FiltersIcon {...props} />,
+    },
+    home: {
+      onPress: () => {
+        navigation.navigate('Home');
+      },
+      component: props => <HomeIcon {...props} />,
+    },
+    decks_menu: {
+      onPress: () => {
+        // TODO: implement decks menu
+        console.log('Decks Menu');
+      },
+      component: props => <DecksMenuIcon {...props} />,
     },
   };
 

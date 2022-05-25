@@ -78,4 +78,8 @@ export default {
     cards: 'CARTAS',
     decks: 'DECKS',
   },
+  settings: {
+    title: 'CONFIGURAÇÕES',
+    language: 'Língua',
+  },
 };

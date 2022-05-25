@@ -6,7 +6,6 @@ import { normalize } from '@shared/helpers/normalize-pixels';
 import { theme } from '@app/theme';
 import Text from '@shared/components/Text';
 import CommunityIcon from '@assets/icons/community.svg';
-import DecksIcon from '@assets/icons/decks.svg';
 import AccountIcon from '@assets/icons/account.svg';
 import StarIcon from '@assets/icons/star.svg';
 import SettingsIcon from '@assets/icons/settings.svg';
@@ -67,20 +66,14 @@ const RenderDrawerItems = () => {
   const { t } = useTranslation('home');
   const navigation = useNavigation();
 
-  type DrawerItemKey = 'myAccount' | 'favorites' | 'community' | 'myDecks' | 'settings';
+  type DrawerItemKey = 'myAccount' | 'favorites' | 'community' | 'settings';
   interface IDrawerItem {
     onPress: () => void;
     icon: React.FC<SvgProps>;
     label: string;
   }
 
-  const renderItems: DrawerItemKey[] = [
-    'myAccount',
-    'favorites',
-    'community',
-    'myDecks',
-    'settings',
-  ];
+  const renderItems: DrawerItemKey[] = ['myAccount', 'favorites', 'community', 'settings'];
 
   const drawerItems: { [key in DrawerItemKey]: IDrawerItem } = {
     myAccount: {
@@ -106,18 +99,9 @@ const RenderDrawerItems = () => {
       icon: props => <CommunityIcon {...props} />,
       label: t('community'),
     },
-    myDecks: {
-      onPress: () => {
-        // TODO: Add navigation
-        console.log('My Decks');
-      },
-      icon: props => <DecksIcon {...props} />,
-      label: t('my_decks'),
-    },
     settings: {
       onPress: () => {
-        // TODO: Add navigation
-        console.log('Settings');
+        navigation.navigate('Settings');
       },
       icon: props => <SettingsIcon {...props} />,
       label: t('settings'),

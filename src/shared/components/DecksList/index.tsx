@@ -9,7 +9,13 @@ import { Deck, StarIconWrapper } from './styles';
 import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
 
-const getDecks = (decksAmount = 5) => Array.from({ length: decksAmount }, (_, i) => i);
+const getDecks = (decksAmount = 5) =>
+  Array.from({ length: decksAmount }, (_, i) => {
+    return {
+      id: i,
+      isFavorite: true,
+    };
+  });
 
 export default function DecksList() {
   const [decks, setDecks] = useState(getDecks());
@@ -25,21 +31,22 @@ export default function DecksList() {
                 <Box my="sm">
                   <StarIconWrapper
                     onPress={() => {
-                      setDecks(prev => {
-                        return prev.filter((_, i) => i !== index);
-                      });
-                      decks.splice(index, 1);
-                      console.log('here', decks);
+                      if (item.isFavorite) {
+                        setDecks(prev => {
+                          return prev.filter((_, i) => i !== index);
+                        });
+                        decks.splice(index, 1);
+                      }
                     }}>
                     <StarIcon
                       width={normalize(40)}
                       height={normalize(40)}
-                      stroke={theme.colors.black}
-                      fill={theme.colors.favorite}
+                      stroke={theme.colors.dark_grey}
+                      fill={item.isFavorite ? theme.colors.favorite : theme.colors.light_grey}
                     />
                   </StarIconWrapper>
                   <Deck />
-                  <Text textAlign="center">NOME DECK {item + 1}</Text>
+                  <Text textAlign="center">DECK {item.id + 1}</Text>
                 </Box>
               </TouchableOpacity>
             );
