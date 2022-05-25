@@ -40,6 +40,11 @@ Deck Chips Server: https://github.com/octaviomuller/deck-chips-server
 </p>
 
 ### Autenticação
+<p align="center">
+<img src="./assets/auth/create-account.png" width="30%">
+<img src="./assets/auth/login.png" width="30%">
+<img src="./assets/auth/password.png" width="30%">
+</p>
 
 ### Favoritos
 <p align="center">
