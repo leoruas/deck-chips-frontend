@@ -6,7 +6,11 @@ import { FlatGrid } from 'react-native-super-grid';
 import CardModal from '../CardModal';
 import { Box } from '../layout/Box';
 import GradientBox from '../layout/GradientBox';
-import { Card } from './styles';
+import { AddSubtractButtonWrapper, Card, EmptyCardSlot, FilledCardSlot } from './styles';
+import PlusIcon from '@assets/icons/plus.svg';
+import MinusIcon from '@assets/icons/minus.svg';
+import { theme } from '@app/theme';
+import { normalize } from '@shared/helpers/normalize-pixels';
 
 const getCards = (cardsAmount = 20) =>
   Array.from({ length: cardsAmount }, (_, i) => {
@@ -51,7 +55,11 @@ const getCards = (cardsAmount = 20) =>
     return card;
   });
 
-export default function CardsList() {
+type CardsListProps = {
+  showCardAmount?: boolean;
+};
+
+export default function CardsList({ showCardAmount }: CardsListProps) {
   const [selectedCard, setSelectedCard] = useState<ICardType | undefined>(undefined);
   const cardModalRef = useRef<BottomSheetModal>(null);
 
@@ -62,14 +70,39 @@ export default function CardsList() {
           data={getCards()}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity
-                key={`home-cards-list-${index}`}
-                onPress={() => {
-                  setSelectedCard(item);
-                  cardModalRef.current?.present();
-                }}>
-                <Card />
-              </TouchableOpacity>
+              <Box>
+                <TouchableOpacity
+                  key={`home-cards-list-${index}`}
+                  onPress={() => {
+                    setSelectedCard(item);
+                    cardModalRef.current?.present();
+                  }}>
+                  <Card />
+                </TouchableOpacity>
+                {showCardAmount && (
+                  <Box flexDirection="row" justifyContent="center" alignItems="center" my="sm">
+                    <AddSubtractButtonWrapper>
+                      <MinusIcon
+                        width={normalize(14)}
+                        height={normalize(14)}
+                        stroke={theme.colors.text_default}
+                        fill={theme.colors.text_default}
+                      />
+                    </AddSubtractButtonWrapper>
+                    <FilledCardSlot />
+                    <EmptyCardSlot />
+                    <EmptyCardSlot />
+                    <AddSubtractButtonWrapper>
+                      <PlusIcon
+                        width={normalize(18)}
+                        height={normalize(18)}
+                        stroke={theme.colors.text_default}
+                        fill={theme.colors.text_default}
+                      />
+                    </AddSubtractButtonWrapper>
+                  </Box>
+                )}
+              </Box>
             );
           }}
           showsVerticalScrollIndicator={false}

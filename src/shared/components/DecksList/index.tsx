@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { FlatGrid } from 'react-native-super-grid';
 import { Box } from '../layout/Box';
 import GradientBox from '../layout/GradientBox';
@@ -8,6 +7,8 @@ import StarIcon from '@assets/icons/star.svg';
 import { Deck, StarIconWrapper } from './styles';
 import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 
 const getDecks = (decksAmount = 5) =>
   Array.from({ length: decksAmount }, (_, i) => {
@@ -18,6 +19,7 @@ const getDecks = (decksAmount = 5) =>
   });
 
 export default function DecksList() {
+  const navigation = useNavigation();
   const [decks, setDecks] = useState(getDecks());
 
   return (
@@ -27,7 +29,10 @@ export default function DecksList() {
           data={decks}
           renderItem={({ item, index }) => {
             return (
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('EditDeck');
+                }}>
                 <Box my="sm">
                   <StarIconWrapper
                     onPress={() => {

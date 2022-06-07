@@ -82,4 +82,8 @@ export default {
     title: 'SETTINGS',
     language: 'Language',
   },
+  edit_deck: {
+    cards: 'CARDS',
+    info: 'INFO',
+  },
 };

@@ -9,8 +9,10 @@ import PlusIcon from '@assets/icons/plus.svg';
 import { normalize } from '@shared/helpers/normalize-pixels';
 import { BottomButton } from './styles';
 import DecksList from '@shared/components/DecksList';
+import { useNavigation } from '@react-navigation/native';
 
 export default function MyDecks() {
+  const navigation = useNavigation();
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
       <StatusBar backgroundColor={theme.colors.bg_primary} />
@@ -25,8 +27,7 @@ export default function MyDecks() {
 
       <BottomButton
         onPress={() => {
-          // TODO: navigate to new deck
-          console.log('New Deck');
+          navigation.navigate('EditDeck');
         }}>
         <PlusIcon
           width={normalize(40)}

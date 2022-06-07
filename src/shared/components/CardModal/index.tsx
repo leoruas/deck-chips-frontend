@@ -57,7 +57,9 @@ const CardModal: ForwardRefRenderFunction<BottomSheetModal, CardModalProps> = ({
       enableHandlePanningGesture={false}
       enableContentPanningGesture={false}
       backdropComponent={props => {
-        return <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />;
+        return (
+          <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.8} />
+        );
       }}>
       <TouchableWithoutFeedback onPress={() => bottomSheetRef.current?.close()}>
         <View style={{ flex: 1 }}>

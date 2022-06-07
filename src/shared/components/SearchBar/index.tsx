@@ -11,11 +11,12 @@ import DecksIcon from '@assets/icons/decks.svg';
 import FiltersIcon from '@assets/icons/filter.svg';
 import HomeIcon from '@assets/icons/home-outline.svg';
 import DecksMenuIcon from '@assets/icons/dots-vertical.svg';
+import DeckCoverIcon from '@assets/icons/deck-cover.svg';
 import { SvgProps } from 'react-native-svg';
 import { Box } from '../layout/Box';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 
-type ButtonOptions = 'community' | 'decks' | 'filters' | 'home' | 'decks_menu';
+type ButtonOptions = 'community' | 'decks' | 'filters' | 'home' | 'decks_menu' | 'deck_cover';
 
 type SearchBarProps = {
   showMenu?: boolean;
@@ -34,7 +35,7 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
   const buttons: { [key in ButtonOptions]: SearchBarButtonProps } = {
     community: {
       onPress: () => {
-        // TODO: Add navigation
+        // TODO: Add navigation to community screen
         console.log('Community');
       },
       component: props => <CommunityIcon {...props} />,
@@ -63,6 +64,13 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
         console.log('Decks Menu');
       },
       component: props => <DecksMenuIcon {...props} />,
+    },
+    deck_cover: {
+      onPress: () => {
+        // TODO: navigate to deck cover
+        console.log('Deck Cover');
+      },
+      component: props => <DeckCoverIcon {...props} />,
     },
   };
 
