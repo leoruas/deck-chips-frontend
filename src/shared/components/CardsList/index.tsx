@@ -1,6 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { ICardType } from '@shared/types/cards.types';
-import React, { useRef, useState } from 'react';
+import { ICardType, IGetCardResponse } from '@shared/types/cards.types';
+import React, { useEffect, useRef, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import CardModal from '../CardModal';
@@ -11,63 +11,32 @@ import PlusIcon from '@assets/icons/plus.svg';
 import MinusIcon from '@assets/icons/minus.svg';
 import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
-
-const getCards = (cardsAmount = 20) =>
-  Array.from({ length: cardsAmount }, (_, i) => {
-    const card: ICardType = {
-      id: 'Card #1',
-      imageUrl:
-        'https://cdn-lor.mobalytics.gg/production/images/set1/pt_br/img/card/game/01SI047.png',
-      relatedCards: [
-        {
-          id: 'Card #2',
-          imageUrl:
-            'https://cdn-lor.mobalytics.gg/production/images/set1/pt_br/img/card/game/01SI047.png',
-          regions: ['shadow_isles'],
-          type: 'spell',
-          rarity: 'common',
-          keyowrds: [],
-          description: `Card #${i + 2}`,
-          isFavorite: (i + 1) % 2 === 0,
-        },
-        {
-          id: 'Card #3',
-          imageUrl:
-            'https://cdn-lor.mobalytics.gg/production/images/set1/pt_br/img/card/game/01SI047.png',
-          regions: ['shadow_isles'],
-          type: 'spell',
-          rarity: 'common',
-          keyowrds: [],
-          description: `Card #${i + 2}`,
-          isFavorite: (i + 1) % 2 === 0,
-        },
-      ],
-      regions: ['shadow_isles'],
-      type: 'spell',
-      rarity: 'common',
-      keyowrds: [],
-      description: `Card #${
-        i + 1
-      }, Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dolor est, porttitor et velit at, blandit suscipit est. Aenean pulvinar tincidunt aliquet.`,
-      isFavorite: i % 2 === 0,
-    };
-
-    return card;
-  });
+import { getCards } from '@app/api/services/cards/get-cards.service';
 
 type CardsListProps = {
   showCardAmount?: boolean;
 };
 
 export default function CardsList({ showCardAmount }: CardsListProps) {
-  const [selectedCard, setSelectedCard] = useState<ICardType | undefined>(undefined);
+  const [selectedCard, setSelectedCard] = useState<IGetCardResponse | undefined>(undefined);
   const cardModalRef = useRef<BottomSheetModal>(null);
+  const [page, setPage] = useState(1);
+  const [cards, setCards] = useState<IGetCardResponse[]>([]);
+
+  const fetchCards = async () => {
+    const cards = await getCards(1);
+    setCards(cards);
+  };
+
+  useEffect(() => {
+    fetchCards();
+  }, []);
 
   return (
     <Box flex={1}>
       <GradientBox>
         <FlatGrid
-          data={getCards()}
+          data={cards}
           renderItem={({ item, index }) => {
             return (
               <Box>
@@ -77,7 +46,7 @@ export default function CardsList({ showCardAmount }: CardsListProps) {
                     setSelectedCard(item);
                     cardModalRef.current?.present();
                   }}>
-                  <Card />
+                  <Card source={{ uri: item.assets[0].gameAbsolutePath }} />
                 </TouchableOpacity>
                 {showCardAmount && (
                   <Box flexDirection="row" justifyContent="center" alignItems="center" my="sm">

@@ -1,21 +1,21 @@
 export const regionsKeys = [
-  'bandle_city',
-  'bilgewater',
-  'demacia',
-  'freljord',
-  'ionia',
-  'noxus',
-  'pnz',
-  'shadow_isles',
-  'shurima',
-  'targon',
+  'BandleCity',
+  'Bilgewater',
+  'Demacia',
+  'Freljord',
+  'Ionia',
+  'Noxus',
+  'PiltoverZaun',
+  'ShadowIsles',
+  'Shurima',
+  'Targon',
 ] as const;
 export type RegionType = typeof regionsKeys[number];
 
-export const typesKeys = ['follower', 'champion', 'spell', 'landmark'] as const;
+export const typesKeys = ['Unit', 'Champion', 'Spell', 'Landmark'] as const;
 export type CardType = typeof typesKeys[number];
 
-export const raritiesKeys = ['common', 'rare', 'epic', 'champion'] as const;
+export const raritiesKeys = ['Common', 'Rare', 'Epic', 'Champion'] as const;
 export type RarityType = typeof raritiesKeys[number];
 
 export const setsKeys = [

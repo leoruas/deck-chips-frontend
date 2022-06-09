@@ -7,7 +7,6 @@ import styled from 'styled-components/native';
 
 export const Card = styled(FastImage).attrs({
   resizeMode: 'contain',
-  source: CardImage,
 })`
   width: ${getPixelValue(280)};
   height: ${getPixelValue(280)};

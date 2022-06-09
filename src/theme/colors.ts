@@ -11,16 +11,16 @@ export const colors = {
 
   textfield_default: '#4A3D3B',
 
-  bandle_city: '#abba00',
-  bilgewater: '#b55921',
-  demacia: '#e0d2a9',
-  freljord: '#83d8f4',
-  ionia: '#c66d8c',
-  noxus: '#781717',
-  pnz: '#f7c063',
-  shadow_isles: '#088e6b',
-  shurima: '#cea321',
-  targon: '#5d59de',
+  BandleCity: '#abba00',
+  Bilgewater: '#b55921',
+  Demacia: '#e0d2a9',
+  Freljord: '#83d8f4',
+  Ionia: '#c66d8c',
+  Noxus: '#781717',
+  PiltoverZaun: '#f7c063',
+  ShadowIsles: '#088e6b',
+  Shurima: '#cea321',
+  Targon: '#5d59de',
 
   type_color: '#a7a4b3',
 

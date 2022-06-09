@@ -34,55 +34,55 @@ type InfoItemProps = {
 
 export const getRegionInfo = (region: RegionType, t: TFunction) => {
   const regionItems: { [key in RegionType]: InfoItemProps } = {
-    bandle_city: {
+    BandleCity: {
       icon: props => <BandleCityIcon {...props} />,
-      label: t('regions.bandle_city'),
-      color: theme.colors.bandle_city,
+      label: t('regions.BandleCity'),
+      color: theme.colors.BandleCity,
     },
-    bilgewater: {
+    Bilgewater: {
       icon: props => <BilgewaterIcon {...props} />,
-      label: t('regions.bilgewater'),
-      color: theme.colors.bilgewater,
+      label: t('regions.Bilgewater'),
+      color: theme.colors.Bilgewater,
     },
-    demacia: {
+    Demacia: {
       icon: props => <DemaciaIcon {...props} />,
-      label: t('regions.demacia'),
-      color: theme.colors.demacia,
+      label: t('regions.Demacia'),
+      color: theme.colors.Demacia,
     },
-    freljord: {
+    Freljord: {
       icon: props => <FreljordIcon {...props} />,
-      label: t('regions.freljord'),
-      color: theme.colors.freljord,
+      label: t('regions.Freljord'),
+      color: theme.colors.Freljord,
     },
-    ionia: {
+    Ionia: {
       icon: props => <IoniaIcon {...props} />,
-      label: t('regions.ionia'),
-      color: theme.colors.ionia,
+      label: t('regions.Ionia'),
+      color: theme.colors.Ionia,
     },
-    noxus: {
+    Noxus: {
       icon: props => <NoxusIcon {...props} />,
-      label: t('regions.noxus'),
-      color: theme.colors.noxus,
+      label: t('regions.Noxus'),
+      color: theme.colors.Noxus,
     },
-    pnz: {
+    PiltoverZaun: {
       icon: props => <PnzIcon {...props} />,
-      label: t('regions.pnz'),
-      color: theme.colors.pnz,
+      label: t('regions.PiltoverZaun'),
+      color: theme.colors.PiltoverZaun,
     },
-    shadow_isles: {
+    ShadowIsles: {
       icon: props => <ShadowIslesIcon {...props} />,
-      label: t('regions.shadow_isles'),
-      color: theme.colors.shadow_isles,
+      label: t('regions.ShadowIsles'),
+      color: theme.colors.ShadowIsles,
     },
-    shurima: {
+    Shurima: {
       icon: props => <ShurimaIcon {...props} />,
-      label: t('regions.shurima'),
-      color: theme.colors.shurima,
+      label: t('regions.Shurima'),
+      color: theme.colors.Shurima,
     },
-    targon: {
+    Targon: {
       icon: props => <TargonIcon {...props} />,
-      label: t('regions.targon'),
-      color: theme.colors.targon,
+      label: t('regions.Targon'),
+      color: theme.colors.Targon,
     },
   };
 
@@ -91,22 +91,22 @@ export const getRegionInfo = (region: RegionType, t: TFunction) => {
 
 export const getTypeInfo = (type: CardType, t: TFunction) => {
   const typeItems: { [key in CardType]: InfoItemProps } = {
-    follower: {
+    Unit: {
       icon: props => <FollowerIcon {...props} />,
       label: t('types.follower'),
       color: theme.colors.type_color,
     },
-    champion: {
+    Champion: {
       icon: props => <ChampionTypeIcon {...props} />,
       label: t('types.champion'),
       color: theme.colors.type_color,
     },
-    spell: {
+    Spell: {
       icon: props => <SpellIcon {...props} />,
       label: t('types.spell'),
       color: theme.colors.type_color,
     },
-    landmark: {
+    Landmark: {
       icon: props => <LandmarkIcon {...props} />,
       label: t('types.landmark'),
       color: theme.colors.type_color,
@@ -118,19 +118,19 @@ export const getTypeInfo = (type: CardType, t: TFunction) => {
 
 export const getRarityInfo = (rarity: RarityType, t: TFunction) => {
   const rarityItems: { [key in RarityType]: InfoItemProps } = {
-    common: {
+    Common: {
       icon: props => <CommonIcon {...props} />,
       label: t('rarities.common'),
     },
-    rare: {
+    Rare: {
       icon: props => <RareIcon {...props} />,
       label: t('rarities.rare'),
     },
-    epic: {
+    Epic: {
       icon: props => <EpicIcon {...props} />,
       label: t('rarities.epic'),
     },
-    champion: {
+    Champion: {
       icon: props => <ChampionIcon {...props} />,
       label: t('rarities.champion'),
     },

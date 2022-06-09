@@ -5,11 +5,12 @@ import Spacer from '@shared/components/layout/Spacer';
 import Text from '@shared/components/Text';
 import { getRarityInfo, getRegionInfo, getTypeInfo } from '@shared/helpers/get-filter-info';
 import { normalize } from '@shared/helpers/normalize-pixels';
-import { ICardType } from '@shared/types/cards.types';
+import { IGetCardResponse } from '@shared/types/cards.types';
 import { CardType, RarityType, RegionType } from '@shared/types/filters.types';
 import React, {
   forwardRef,
   ForwardRefRenderFunction,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -28,11 +29,12 @@ import Animated from 'react-native-reanimated';
 import { Card, ModalWrapper } from './styles';
 import Divider from '../layout/Divider';
 import CloseIcon from '@assets/icons/close.svg';
+import { getCardByCode } from '@app/api/services/cards/get-card-by-code.service';
 
 export type BottomSheetModalHandler = BottomSheetModal;
 
 type CardModalProps = {
-  card?: ICardType;
+  card?: IGetCardResponse;
 };
 
 const { width } = Dimensions.get('window');
@@ -45,7 +47,9 @@ const CardModal: ForwardRefRenderFunction<BottomSheetModal, CardModalProps> = ({
   useImperativeHandle(ref, () => bottomSheetRef.current as BottomSheetModal, []);
   const { t } = useTranslation('shared');
 
-  const [isFavorite, setIsFavorite] = useState(card?.isFavorite);
+  // const [isFavorite, setIsFavorite] = useState(card?.isFavorite);
+  //TODO: implement favorite
+  const [isFavorite, setIsFavorite] = useState(false);
 
   return (
     <BottomSheetModal
@@ -95,23 +99,24 @@ const CardModal: ForwardRefRenderFunction<BottomSheetModal, CardModalProps> = ({
         <ScrollView overScrollMode="never">
           <Box px="lg" pb="xlg" flex={1}>
             <Spacer height={20} />
-            <Box flexDirection="row" flex={1}>
-              <CardInfoItem type="region" regions={card?.regions} />
-              <Box mx="md">
-                <CardInfoItem type="type" cardType={card?.type} />
-              </Box>
-              <CardInfoItem type="rarity" rarity={card?.rarity} />
+            <Box flexDirection="row">
+              {/* fazer funfar types e raridade */}
+              <CardInfoItem type="region" regions={card?.regionRef} />
+              {/* <Box mx="md"> */}
+              <CardInfoItem type="type" cardType={card?.type} />
+              {/* </Box> */}
+              <CardInfoItem type="rarity" rarity={card?.rarityRef} />
             </Box>
 
             <Divider my="lg" />
 
             <Text variant="title">{t('card_info.keywords')}</Text>
-            <Text mt="md">[WIP]</Text>
+            <Text mt="md">{card?.keywords}</Text>
 
             <Text variant="title" mt="lg">
               {t('card_info.description')}
             </Text>
-            <Text mt="md">{card?.description}</Text>
+            <Text mt="md">{card?.descriptionRaw}</Text>
           </Box>
         </ScrollView>
       </ModalWrapper>
@@ -120,18 +125,40 @@ const CardModal: ForwardRefRenderFunction<BottomSheetModal, CardModalProps> = ({
 };
 
 type CardsSliderProps = {
-  card?: ICardType;
+  card?: IGetCardResponse;
 };
 
 const CardsSlider = ({ card }: CardsSliderProps) => {
+  const [associatedCards, setAssociatedCards] = useState<IGetCardResponse[]>([]);
+
   const images = useMemo(() => {
     if (!card) return [];
 
-    const selected: ICardType = card;
+    const selected: IGetCardResponse = card;
     const spacer = selected;
 
-    return [spacer, selected, ...card.relatedCards, spacer];
-  }, [card]);
+    return [spacer, selected, ...associatedCards, spacer];
+    // return [spacer, selected, spacer];
+  }, [card, associatedCards]);
+
+  const fetchAssociatedCards = async () => {
+    const associated: IGetCardResponse[] = [];
+
+    if (!card?.associatedCardsRefs) return [];
+
+    for (let index: number = 0; index < card?.associatedCardsRefs.length; index++) {
+      const ref = card?.associatedCardsRefs[index];
+      const associatedCard = await getCardByCode(ref);
+      if (!associatedCard) return;
+      associated.push(associatedCard);
+    }
+
+    setAssociatedCards(associated);
+  };
+
+  useEffect(() => {
+    fetchAssociatedCards();
+  }, []);
 
   const scrollX = useRef(new Animated.Value(0)).current;
 
@@ -170,7 +197,7 @@ const CardsSlider = ({ card }: CardsSliderProps) => {
                 }}>
                 <Card
                   key={`card-modal-item-${index}`}
-                  source={{ uri: item.imageUrl }}
+                  source={{ uri: item.assets[0].gameAbsolutePath }}
                   height={CARD_HEIGHT}
                   width={CARD_WIDTH}
                 />
@@ -217,11 +244,13 @@ const CardInfoItem = ({ type, regions, cardType, rarity }: CardInfoItemProps) =>
         const Icon = item.icon;
 
         return (
-          <Box key={item.toString()} flexDirection="row" alignItems="center" my="sm">
+          <Box key={item.toString()} flexDirection="row" alignItems="center" my="sm" flex={1}>
             <Icon width={normalize(30)} height={normalize(30)} fill={item.color ?? 'none'} />
             <Text
               mx="md"
-              numberOfLines={2}
+              textAlign="center"
+              flexShrink={1}
+              numberOfLines={1}
               fontSize={type === 'region' ? normalize(20) : normalize(25)}>
               {item.label}
             </Text>
