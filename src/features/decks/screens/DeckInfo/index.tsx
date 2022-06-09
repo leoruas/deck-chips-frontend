@@ -117,10 +117,10 @@ const FlexDivider = () => {
 const RenderRegions = () => {
   const { t } = useTranslation('shared');
 
-  const region1 = getRegionInfo('shadow_isles', t);
+  const region1 = getRegionInfo('ShadowIsles', t);
   const Region1Icon = region1.icon;
 
-  const region2 = getRegionInfo('freljord', t);
+  const region2 = getRegionInfo('Freljord', t);
   const Region2Icon = region2.icon;
 
   return (
@@ -163,16 +163,16 @@ const RenderRegions = () => {
 const RenderTypes = () => {
   const { t } = useTranslation('shared');
 
-  const champions = getTypeInfo('champion', t);
+  const champions = getTypeInfo('Champion', t);
   const ChampionsIcon = champions.icon;
 
-  const followers = getTypeInfo('follower', t);
-  const FollowersIcon = followers.icon;
+  const units = getTypeInfo('Unit', t);
+  const UnitsIcon = units.icon;
 
-  const spells = getTypeInfo('spell', t);
+  const spells = getTypeInfo('Spell', t);
   const SpellsIcon = spells.icon;
 
-  const landmarks = getTypeInfo('landmark', t);
+  const landmarks = getTypeInfo('Landmark', t);
   const LandmarksIcon = landmarks.icon;
 
   return (
@@ -196,7 +196,7 @@ const RenderTypes = () => {
 
         <Box flexDirection="row" alignItems="center" my="sm" mx="md" flex={1}>
           <Box mr="md">
-            <FollowersIcon
+            <UnitsIcon
               width={normalize(50)}
               height={normalize(50)}
               fill={theme.colors.type_color}
@@ -206,7 +206,7 @@ const RenderTypes = () => {
             </CounterWrapper>
           </Box>
           <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
-            {followers.label}
+            {units.label}
           </Text>
         </Box>
       </Box>
@@ -251,16 +251,16 @@ const RenderTypes = () => {
 const RenderRarities = () => {
   const { t } = useTranslation('shared');
 
-  const champion = getRarityInfo('champion', t);
+  const champion = getRarityInfo('Champion', t);
   const ChampionIcon = champion.icon;
 
-  const common = getRarityInfo('common', t);
+  const common = getRarityInfo('Common', t);
   const CommonIcon = common.icon;
 
-  const rare = getRarityInfo('rare', t);
+  const rare = getRarityInfo('Rare', t);
   const RareIcon = rare.icon;
 
-  const epic = getRarityInfo('epic', t);
+  const epic = getRarityInfo('Epic', t);
   const EpicIcon = epic.icon;
 
   return (

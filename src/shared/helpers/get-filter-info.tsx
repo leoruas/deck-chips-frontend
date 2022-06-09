@@ -11,7 +11,7 @@ import ShadowIslesIcon from '@assets/images/regions/shadow_isles.svg';
 import ShurimaIcon from '@assets/images/regions/shurima.svg';
 import TargonIcon from '@assets/images/regions/targon.svg';
 
-import FollowerIcon from '@assets/images/types/follower.svg';
+import UnitIcon from '@assets/images/types/unit.svg';
 import ChampionTypeIcon from '@assets/images/types/champion.svg';
 import SpellIcon from '@assets/images/types/spell.svg';
 import LandmarkIcon from '@assets/images/types/landmark.svg';
@@ -92,8 +92,8 @@ export const getRegionInfo = (region: RegionType, t: TFunction) => {
 export const getTypeInfo = (type: CardType, t: TFunction) => {
   const typeItems: { [key in CardType]: InfoItemProps } = {
     Unit: {
-      icon: props => <FollowerIcon {...props} />,
-      label: t('types.follower'),
+      icon: props => <UnitIcon {...props} />,
+      label: t('types.unit'),
       color: theme.colors.type_color,
     },
     Champion: {

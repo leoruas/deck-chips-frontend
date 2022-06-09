@@ -21,7 +21,7 @@ export default {
       Targon: 'Targon',
     },
     types: {
-      follower: 'Seguidor',
+      unit: 'Unidade',
       champion: 'Campeão',
       spell: 'Feitiço',
       landmark: 'Monumento',
