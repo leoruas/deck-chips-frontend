@@ -86,4 +86,12 @@ export default {
     cards: 'CARTAS',
     info: 'INFO',
   },
+  deck_info: {
+    mana_cost: 'Custo de Mana',
+    regions: 'Regiões',
+    type: 'Tipo',
+    rarity: 'Raridade',
+    total_cost: 'Custo Total',
+    amount_essences: '{{amount}} essências',
+  },
 };

@@ -11,9 +11,11 @@ import { BottomBarTextButton, BottomBarWrapper, SaveButtonWrapper } from './styl
 import SaveIcon from '@assets/icons/save.svg';
 import { normalize } from '@shared/helpers/normalize-pixels';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native';
 
 export default function EditDeck() {
   const { t } = useTranslation('edit_deck');
+  const navigation = useNavigation();
 
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
@@ -39,13 +41,13 @@ export default function EditDeck() {
           onPress={() => {
             //TODO: add save deck
             console.log('Save');
+            navigation.goBack();
           }}>
           <SaveIcon width={normalize(50)} height={normalize(50)} fill={theme.colors.text_default} />
         </SaveButtonWrapper>
         <BottomBarTextButton
           onPress={() => {
-            //TODO: add navigation to deck info
-            console.log('Info');
+            navigation.navigate('DeckInfo');
           }}>
           <Text numberOfLines={1}>{t('info')}</Text>
         </BottomBarTextButton>

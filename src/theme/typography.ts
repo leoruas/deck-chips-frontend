@@ -19,4 +19,10 @@ export const typography = {
     fontFamily: 'Univers-Condensed',
     letterSpacing: normalize(1.5),
   },
+  title2: {
+    fontSize: normalize(40),
+    color: 'text_default',
+    fontFamily: 'Univers-Condensed',
+    letterSpacing: normalize(1.5),
+  },
 };
