@@ -12,6 +12,7 @@ interface FilterContextType {
   filterType: (val: CardType) => void;
   filterRarity: (val: RarityType) => void;
   filterSet: (val: SetType) => void;
+  filterCost: (val: string) => void;
   resetFilters: () => void;
   isFilterSelected: (option: FilterOptions, val: string) => boolean;
 }
@@ -86,6 +87,11 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     setCurrentFilterValue(setTypeToFilter[set]);
   };
 
+  const filterCost = (cost: string) => {
+    setCurrentFilterOption('cost');
+    setCurrentFilterValue(cost);
+  };
+
   const isFilterSelected = (filterOption: FilterOptions, value: string) => {
     if (filterOption === 'region') {
       return currentFilterValue === regionTypeToFilter[value as RegionType];
@@ -104,6 +110,9 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
     if (filterOption === 'set') {
       return currentFilterValue === setTypeToFilter[value as SetType];
     }
+    if (filterOption === 'cost') {
+      return currentFilterValue === value;
+    }
 
     return false;
   };
@@ -119,6 +128,7 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
         filterType,
         filterRarity,
         filterSet,
+        filterCost,
         resetFilters,
         isFilterSelected,
       }}>

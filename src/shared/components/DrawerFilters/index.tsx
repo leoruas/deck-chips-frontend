@@ -123,19 +123,29 @@ const RenderRegions = () => {
 };
 
 const RenderCosts = () => {
-  const costs = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10+'];
+  const costs = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  const { filterCost, isFilterSelected, currentFilterValue, resetFilters } = useFilters();
 
   return (
     <Box flexDirection="row" flexWrap="wrap" mt="lg">
       {costs.map(cost => {
+        const hasFilter = !!currentFilterValue;
+        const isSelected = isFilterSelected('cost', cost.toString());
+
         return (
           <TouchableOpacity
             onPress={() => {
-              //TODO: implement cost filter
-              console.log('Cost', cost);
+              if (isSelected) {
+                resetFilters();
+              } else {
+                filterCost(cost);
+              }
             }}>
-            <CostCircle colors={[theme.colors.light_blue, theme.colors.dark_blue]} key={cost}>
-              <Text color="white">{cost}</Text>
+            <CostCircle
+              opacity={isSelected || !hasFilter ? 1 : 0.5}
+              colors={[theme.colors.light_blue, theme.colors.dark_blue]}
+              key={cost}>
+              <Text color="white">{cost === '10' ? '10+' : cost}</Text>
             </CostCircle>
           </TouchableOpacity>
         );
