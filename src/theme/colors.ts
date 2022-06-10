@@ -36,4 +36,5 @@ export const colors = {
   //opacity hexes
   transparent: 'transparent',
   opacity75: 'BF',
+  opacity50: '80',
 };

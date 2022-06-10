@@ -6,6 +6,7 @@ import EditDeckDrawer from './EditDeckDrawer';
 import MyFavorites from '@features/favorites/screens/MyFavorites';
 import Settings from '@features/settings/screens/Settings';
 import DeckInfo from '@features/decks/screens/DeckInfo';
+import DeckCards from '@features/decks/screens/DeckCards';
 
 export type DefaultStackParamList = {
   Home: undefined;
@@ -14,6 +15,7 @@ export type DefaultStackParamList = {
   Settings: undefined;
   EditDeck: undefined;
   DeckInfo: undefined;
+  DeckCards: undefined;
 };
 
 const Stack = createNativeStackNavigator<DefaultStackParamList>();
@@ -27,6 +29,7 @@ export default function DefaultRoutes() {
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="EditDeck" component={EditDeckDrawer} />
       <Stack.Screen name="DeckInfo" component={DeckInfo} />
+      <Stack.Screen name="DeckCards" component={DeckCards} />
     </Stack.Navigator>
   );
 }

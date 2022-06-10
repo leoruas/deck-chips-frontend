@@ -32,8 +32,7 @@ export default function EditDeck() {
       <BottomBarWrapper>
         <BottomBarTextButton
           onPress={() => {
-            //TODO: add navigation to deck cards
-            console.log('Cards');
+            navigation.navigate('DeckCards');
           }}>
           <Text numberOfLines={1}>{t('cards')}</Text>
         </BottomBarTextButton>
