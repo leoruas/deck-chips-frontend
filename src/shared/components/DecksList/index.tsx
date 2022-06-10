@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatGrid } from 'react-native-super-grid';
 import { Box } from '../layout/Box';
 import GradientBox from '../layout/GradientBox';
@@ -8,19 +8,34 @@ import { Deck, StarIconWrapper } from './styles';
 import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
-
-const getDecks = (decksAmount = 5) =>
-  Array.from({ length: decksAmount }, (_, i) => {
-    return {
-      id: i,
-      isFavorite: true,
-    };
-  });
+import { ActivityIndicator, TouchableOpacity } from 'react-native';
+import { IDeckType } from '@shared/types/cards.types';
+import { getDecks } from '@app/api/services/decks/get-decks.service';
 
 export default function DecksList() {
   const navigation = useNavigation();
-  const [decks, setDecks] = useState(getDecks());
+  const [decks, setDecks] = useState<IDeckType[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchDecks = async () => {
+    setIsLoading(true);
+    const decks = await getDecks();
+
+    setDecks(decks);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchDecks();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Box flex={1} justifyContent="center" alignItems="center">
+        <ActivityIndicator color={theme.colors.text_default} size="large" />
+      </Box>
+    );
+  }
 
   return (
     <Box flex={1}>
@@ -31,27 +46,27 @@ export default function DecksList() {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('EditDeck');
+                  // navigation.navigate('EditDeck');
                 }}>
                 <Box my="sm">
                   <StarIconWrapper
                     onPress={() => {
-                      if (item.isFavorite) {
-                        setDecks(prev => {
-                          return prev.filter((_, i) => i !== index);
-                        });
-                        decks.splice(index, 1);
-                      }
+                      // if (item.isFavorite) {
+                      //   setDecks(prev => {
+                      //     return prev.filter((_, i) => i !== index);
+                      //   });
+                      //   decks.splice(index, 1);
+                      // }
                     }}>
                     <StarIcon
                       width={normalize(40)}
                       height={normalize(40)}
                       stroke={theme.colors.dark_grey}
-                      fill={item.isFavorite ? theme.colors.favorite : theme.colors.light_grey}
+                      fill={false ? theme.colors.favorite : theme.colors.light_grey}
                     />
                   </StarIconWrapper>
-                  <Deck />
-                  <Text textAlign="center">DECK {item.id + 1}</Text>
+                  <Deck source={{ uri: item.coverUrl }} />
+                  <Text textAlign="center">{item.title}</Text>
                 </Box>
               </TouchableOpacity>
             );
