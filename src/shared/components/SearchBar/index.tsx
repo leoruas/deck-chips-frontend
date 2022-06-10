@@ -74,8 +74,7 @@ export default function SearchBar({
     },
     deck_cover: {
       onPress: () => {
-        // TODO: navigate to deck cover
-        console.log('Deck Cover');
+        navigation.navigate('DeckCover');
       },
       component: props => <DeckCoverIcon {...props} />,
     },

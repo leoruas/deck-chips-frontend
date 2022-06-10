@@ -119,10 +119,16 @@ export default function EditDeck() {
         <SaveButtonWrapper
           onPress={async () => {
             setIsLoading(true);
-            //TODO: change cover
+
+            if (!deckCards.length) {
+              setIsLoading(false);
+              return;
+            }
+            const coverCardCode =
+              deck?.coverCardCode === '' ? deckCards[0] : deck?.coverCardCode ?? '';
             await saveDeck({
-              title: deck?.title ?? '',
-              coverCardCode: deckCards[0],
+              title: deck?.title ?? 'New Deck',
+              coverCardCode,
               cards: deckCards,
             });
             setIsLoading(false);

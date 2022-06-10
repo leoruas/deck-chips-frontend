@@ -1,6 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { IGetCardResponse } from '@shared/types/cards.types';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import CardModal from '../CardModal';
@@ -11,6 +11,8 @@ import PlusIcon from '@assets/icons/plus.svg';
 import MinusIcon from '@assets/icons/minus.svg';
 import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
+import { useDeck } from '@shared/contexts/DeckContext';
+import { getCardByCode } from '@app/api/services/cards/get-card-by-code.service';
 
 type CardsListProps = {
   cards: IGetCardResponse[];
@@ -20,6 +22,7 @@ type CardsListProps = {
   deckCards?: string[];
   onAddCard?: (cardCode: string) => void;
   onRemoveCard?: (cardCode: string) => void;
+  selectable?: boolean;
 };
 
 export default function CardsList({
@@ -30,12 +33,31 @@ export default function CardsList({
   deckCards,
   onAddCard,
   onRemoveCard,
+  selectable,
 }: CardsListProps) {
+  const { deck, setDeckCover } = useDeck();
+
   const [selectedCard, setSelectedCard] = useState<IGetCardResponse | undefined>(undefined);
   const cardModalRef = useRef<BottomSheetModal>(null);
 
+  const fetchInitialCard = async () => {
+    if (!deck) return;
+    const card = await getCardByCode(deck.coverCardCode);
+    setSelectedCard(card);
+  };
+
+  useEffect(() => {
+    if (selectable && deck?.coverCardCode) {
+      fetchInitialCard();
+    }
+  }, [deck?.coverCardCode]);
+
   const countOccurrences = (arr: any[], val: any) =>
     arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
+  const isSelectedCard = (card: IGetCardResponse) => {
+    return selectedCard?.cardCode === card.cardCode;
+  };
 
   return (
     <Box flex={1}>
@@ -45,14 +67,19 @@ export default function CardsList({
           onEndReached={onEndReached}
           renderItem={({ item, index }) => {
             let amount = countOccurrences(deckCards ?? [], item.cardCode);
+            const opacity = selectable && !isSelectedCard(item) ? 0.3 : 1;
 
             return (
-              <Box>
+              <Box opacity={opacity}>
                 <TouchableOpacity
                   key={`home-cards-list-${index}`}
                   onPress={() => {
                     setSelectedCard(item);
-                    cardModalRef.current?.present();
+                    if (selectable) {
+                      setDeckCover(item.cardCode);
+                    } else {
+                      cardModalRef.current?.present();
+                    }
                   }}>
                   <Card source={{ uri: item.assets[0].gameAbsolutePath }} />
                 </TouchableOpacity>

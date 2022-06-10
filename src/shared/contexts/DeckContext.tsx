@@ -5,6 +5,8 @@ interface DeckContextType {
   deck?: IDeckType;
   setDeck: (val?: IDeckType) => void;
   setNewDeck: () => void;
+  setDeckCover: (code: string) => void;
+  setDeckTitle: (code: string) => void;
 }
 
 export interface DeckProviderProps {
@@ -25,12 +27,32 @@ export const DeckProvider: React.FC<DeckProviderProps> = ({ children }) => {
     });
   };
 
+  const setDeckCover = (cardCode: string) => {
+    if (!deck) return;
+
+    setDeck({
+      ...deck,
+      coverCardCode: cardCode,
+    });
+  };
+
+  const setDeckTitle = (newTitle: string) => {
+    if (!deck) return;
+
+    setDeck({
+      ...deck,
+      title: newTitle,
+    });
+  };
+
   return (
     <DeckContext.Provider
       value={{
         deck,
         setDeck,
         setNewDeck,
+        setDeckCover,
+        setDeckTitle,
       }}>
       {children}
     </DeckContext.Provider>

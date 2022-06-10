@@ -7,7 +7,7 @@ import StarIcon from '@assets/icons/star.svg';
 import { Deck, StarIconWrapper } from './styles';
 import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { IDeckType } from '@shared/types/cards.types';
 import { getDecks } from '@app/api/services/decks/get-decks.service';
@@ -16,6 +16,7 @@ export default function DecksList() {
   const navigation = useNavigation();
   const [decks, setDecks] = useState<IDeckType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const isFocused = useIsFocused();
 
   const fetchDecks = async () => {
     setIsLoading(true);
@@ -27,7 +28,7 @@ export default function DecksList() {
 
   useEffect(() => {
     fetchDecks();
-  }, []);
+  }, [isFocused]);
 
   if (isLoading) {
     return (
@@ -46,6 +47,7 @@ export default function DecksList() {
             return (
               <TouchableOpacity
                 onPress={() => {
+                  // setDeck(item);
                   // navigation.navigate('EditDeck');
                 }}>
                 <Box my="sm">

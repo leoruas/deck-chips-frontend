@@ -7,7 +7,12 @@ type SaveDeckProps = {
   coverCardCode: string;
 };
 export const saveDeck = async ({ ...params }: SaveDeckProps) => {
-  await api.post(`decks/`, {
-    ...params,
-  });
+  try {
+    console.log(params);
+    await api.post(`decks/`, {
+      ...params,
+    });
+  } catch (err) {
+    console.error(err);
+  }
 };
