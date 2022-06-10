@@ -16,9 +16,9 @@ import { getCards } from '@app/api/services/cards/get-cards.service';
 import { IDeckType, IGetCardResponse } from '@shared/types/cards.types';
 import { debounce } from 'lodash';
 import { useFilters } from '@shared/contexts/FilterContext';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { DefaultStackParamList } from '@app/routes/Default.routes';
 import { useDeck } from '@shared/contexts/DeckContext';
+import { saveDeck } from '@app/api/services/decks/save-deck.service';
+import Loader from '@shared/components/Loader';
 
 export default function EditDeck() {
   const { t } = useTranslation('edit_deck');
@@ -30,12 +30,13 @@ export default function EditDeck() {
   const [search, setSearch] = useState('');
   const [isLastPage, setIsLastPage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const { currentFilterOption, currentFilterValue, resetFilters } = useFilters();
   const isFocused = useIsFocused();
   const [deckCards, setDeckCards] = useState(deck?.cards ? [...deck.cards] : []);
 
   const fetchCards = async (pageNum: number, name: string) => {
-    setIsLoading(true);
+    setIsFetching(true);
     const cards = await getCards({
       page: pageNum,
       name,
@@ -48,7 +49,7 @@ export default function EditDeck() {
       setIsLastPage(true);
     }
     setCards(prev => [...prev, ...cards]);
-    setIsLoading(false);
+    setIsFetching(false);
   };
 
   const dFetchCards = useCallback(debounce(fetchCards, 500), []);
@@ -80,6 +81,7 @@ export default function EditDeck() {
       <StatusBar backgroundColor={theme.colors.bg_primary} />
 
       <Box flex={1} px="md">
+        <Loader showLoader={isLoading} />
         <SearchBar
           text={search}
           onChangeText={onSearchChange}
@@ -100,7 +102,7 @@ export default function EditDeck() {
             setDeckCards(prev => prev.filter((_, i) => i !== index));
           }}
           onEndReached={onEndReached}
-          isLoading={isLoading}
+          isLoading={isFetching}
         />
       </Box>
 
@@ -115,9 +117,15 @@ export default function EditDeck() {
           <Text numberOfLines={1}>{t('cards')}</Text>
         </BottomBarTextButton>
         <SaveButtonWrapper
-          onPress={() => {
-            //TODO: add save deck
-            console.log('Save');
+          onPress={async () => {
+            setIsLoading(true);
+            //TODO: change cover
+            await saveDeck({
+              title: deck?.title ?? '',
+              coverCardCode: deckCards[0],
+              cards: deckCards,
+            });
+            setIsLoading(false);
             navigation.goBack();
           }}>
           <SaveIcon width={normalize(50)} height={normalize(50)} fill={theme.colors.text_default} />
