@@ -1,6 +1,6 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { ICardType, IGetCardResponse } from '@shared/types/cards.types';
-import React, { useEffect, useRef, useState } from 'react';
+import { IGetCardResponse } from '@shared/types/cards.types';
+import React, { useRef, useState } from 'react';
 import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import CardModal from '../CardModal';
