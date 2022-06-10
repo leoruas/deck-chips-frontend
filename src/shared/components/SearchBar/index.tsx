@@ -19,6 +19,8 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 type ButtonOptions = 'community' | 'decks' | 'filters' | 'home' | 'decks_menu' | 'deck_cover';
 
 type SearchBarProps = {
+  text: string;
+  onChangeText: (text: string) => void;
   showMenu?: boolean;
   rightButtons?: ButtonOptions[];
 };
@@ -28,7 +30,12 @@ type SearchBarButtonProps = {
   component: React.FC<SvgProps>;
 };
 
-export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProps) {
+export default function SearchBar({
+  text,
+  onChangeText,
+  showMenu,
+  rightButtons = [],
+}: SearchBarProps) {
   const { t } = useTranslation('shared');
   const navigation = useNavigation();
 
@@ -116,6 +123,8 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
 
       <TextInput
         placeholder={t('search')}
+        value={text}
+        onChangeText={onChangeText}
         placeholderTextColor={theme.colors.text_default}
         style={{
           flex: 1,

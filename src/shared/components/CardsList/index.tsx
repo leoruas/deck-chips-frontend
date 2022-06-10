@@ -1,7 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ICardType, IGetCardResponse } from '@shared/types/cards.types';
 import React, { useEffect, useRef, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import CardModal from '../CardModal';
 import { Box } from '../layout/Box';
@@ -11,32 +11,29 @@ import PlusIcon from '@assets/icons/plus.svg';
 import MinusIcon from '@assets/icons/minus.svg';
 import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
-import { getCards } from '@app/api/services/cards/get-cards.service';
 
 type CardsListProps = {
+  cards: IGetCardResponse[];
+  onEndReached: () => void;
+  isLoading: boolean;
   showCardAmount?: boolean;
 };
 
-export default function CardsList({ showCardAmount }: CardsListProps) {
+export default function CardsList({
+  cards,
+  onEndReached,
+  isLoading,
+  showCardAmount,
+}: CardsListProps) {
   const [selectedCard, setSelectedCard] = useState<IGetCardResponse | undefined>(undefined);
   const cardModalRef = useRef<BottomSheetModal>(null);
-  const [page, setPage] = useState(1);
-  const [cards, setCards] = useState<IGetCardResponse[]>([]);
-
-  const fetchCards = async () => {
-    const cards = await getCards(1);
-    setCards(cards);
-  };
-
-  useEffect(() => {
-    fetchCards();
-  }, []);
 
   return (
     <Box flex={1}>
       <GradientBox>
         <FlatGrid
           data={cards}
+          onEndReached={onEndReached}
           renderItem={({ item, index }) => {
             return (
               <Box>
@@ -75,6 +72,13 @@ export default function CardsList({ showCardAmount }: CardsListProps) {
             );
           }}
           showsVerticalScrollIndicator={false}
+          ListFooterComponent={() => {
+            return (
+              <Box flex={1}>
+                {isLoading && <ActivityIndicator color={theme.colors.text_default} size="large" />}
+              </Box>
+            );
+          }}
         />
       </GradientBox>
 
