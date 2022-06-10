@@ -3,9 +3,9 @@ import CardsList from '@shared/components/CardsList';
 import { Box } from '@shared/components/layout/Box';
 import { SafeAreaBox } from '@shared/components/layout/SafeAreaBox';
 import Spacer from '@shared/components/layout/Spacer';
-import SearchBar from '@shared/components/SearchBar';
+import SearchBar, { SearchBarButtonOptions } from '@shared/components/SearchBar';
 import Text from '@shared/components/Text';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { BottomBarTextButton, BottomBarWrapper, SaveButtonWrapper } from './styles';
 import SaveIcon from '@assets/icons/save.svg';
@@ -19,8 +19,16 @@ import { useFilters } from '@shared/contexts/FilterContext';
 import { useDeck } from '@shared/contexts/DeckContext';
 import { saveDeck } from '@app/api/services/decks/save-deck.service';
 import Loader from '@shared/components/Loader';
+import { DefaultStackParamList } from '@app/routes/Default.routes';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export default function EditDeck() {
+type PageProps = NativeStackScreenProps<DefaultStackParamList, 'EditDeck'>;
+
+export default function EditDeck({ route }: PageProps) {
+  const { disableEdit } = route.params;
+  const rightButtons: SearchBarButtonOptions[] = disableEdit
+    ? ['filters']
+    : ['deck_cover', 'filters'];
   const { t } = useTranslation('edit_deck');
   const navigation = useNavigation();
   const { deck } = useDeck();
@@ -82,16 +90,13 @@ export default function EditDeck() {
 
       <Box flex={1} px="md">
         <Loader showLoader={isLoading} />
-        <SearchBar
-          text={search}
-          onChangeText={onSearchChange}
-          rightButtons={['deck_cover', 'filters']}
-        />
+        <SearchBar text={search} onChangeText={onSearchChange} rightButtons={rightButtons} />
 
         <Spacer height={12} />
 
         <CardsList
           showCardAmount
+          disableEdit={disableEdit}
           cards={cards}
           deckCards={deckCards}
           onAddCard={(code: string) => {
@@ -118,6 +123,9 @@ export default function EditDeck() {
         </BottomBarTextButton>
         <SaveButtonWrapper
           onPress={async () => {
+            if (disableEdit) {
+              return;
+            }
             setIsLoading(true);
 
             if (!deckCards.length) {

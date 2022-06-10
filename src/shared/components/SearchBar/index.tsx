@@ -16,13 +16,19 @@ import { SvgProps } from 'react-native-svg';
 import { Box } from '../layout/Box';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 
-type ButtonOptions = 'community' | 'decks' | 'filters' | 'home' | 'decks_menu' | 'deck_cover';
+export type SearchBarButtonOptions =
+  | 'community'
+  | 'decks'
+  | 'filters'
+  | 'home'
+  | 'decks_menu'
+  | 'deck_cover';
 
 type SearchBarProps = {
   text: string;
   onChangeText: (text: string) => void;
   showMenu?: boolean;
-  rightButtons?: ButtonOptions[];
+  rightButtons?: SearchBarButtonOptions[];
 };
 
 type SearchBarButtonProps = {
@@ -39,11 +45,10 @@ export default function SearchBar({
   const { t } = useTranslation('shared');
   const navigation = useNavigation();
 
-  const buttons: { [key in ButtonOptions]: SearchBarButtonProps } = {
+  const buttons: { [key in SearchBarButtonOptions]: SearchBarButtonProps } = {
     community: {
       onPress: () => {
-        // TODO: Add navigation to community screen
-        console.log('Community');
+        navigation.navigate('CommunityDecks');
       },
       component: props => <CommunityIcon {...props} />,
     },
@@ -80,7 +85,7 @@ export default function SearchBar({
     },
   };
 
-  const renderButton = (option: ButtonOptions) => {
+  const renderButton = (option: SearchBarButtonOptions) => {
     const IconButton = buttons[option].component;
     const onPress = buttons[option].onPress;
 

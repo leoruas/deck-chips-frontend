@@ -31,7 +31,7 @@ export default function MyDecks() {
       <BottomButton
         onPress={() => {
           setNewDeck();
-          navigation.navigate('EditDeck');
+          navigation.navigate('EditDeck', {});
         }}>
         <PlusIcon
           width={normalize(40)}

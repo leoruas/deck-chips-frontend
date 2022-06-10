@@ -20,6 +20,6 @@ export const Deck = styled(FastImage).attrs({
 export const StarIconWrapper = styled.TouchableOpacity`
   position: absolute;
   z-index: 10;
-  right: ${getPixelValue(25)};
+  right: ${getPixelValue(15)};
   top: ${getPixelValue(10)};
 `;

@@ -93,8 +93,7 @@ const RenderDrawerItems = () => {
     },
     community: {
       onPress: () => {
-        // TODO: Add navigation
-        console.log('Community');
+        navigation.navigate('CommunityDecks');
       },
       icon: props => <CommunityIcon {...props} />,
       label: t('community'),

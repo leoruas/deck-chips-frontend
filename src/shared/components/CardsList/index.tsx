@@ -19,6 +19,7 @@ type CardsListProps = {
   onEndReached: () => void;
   isLoading: boolean;
   showCardAmount?: boolean;
+  disableEdit?: boolean;
   deckCards?: string[];
   onAddCard?: (cardCode: string) => void;
   onRemoveCard?: (cardCode: string) => void;
@@ -30,6 +31,7 @@ export default function CardsList({
   onEndReached,
   isLoading,
   showCardAmount,
+  disableEdit,
   deckCards,
   onAddCard,
   onRemoveCard,
@@ -85,18 +87,20 @@ export default function CardsList({
                 </TouchableOpacity>
                 {showCardAmount && (
                   <Box flexDirection="row" justifyContent="center" alignItems="center" my="sm">
-                    <AddSubtractButtonWrapper
-                      disabled={amount === 0}
-                      onPress={() => {
-                        onRemoveCard?.(item.cardCode);
-                      }}>
-                      <MinusIcon
-                        width={normalize(14)}
-                        height={normalize(14)}
-                        stroke={theme.colors.text_default}
-                        fill={theme.colors.text_default}
-                      />
-                    </AddSubtractButtonWrapper>
+                    {!disableEdit && (
+                      <AddSubtractButtonWrapper
+                        disabled={amount === 0}
+                        onPress={() => {
+                          onRemoveCard?.(item.cardCode);
+                        }}>
+                        <MinusIcon
+                          width={normalize(14)}
+                          height={normalize(14)}
+                          stroke={theme.colors.text_default}
+                          fill={theme.colors.text_default}
+                        />
+                      </AddSubtractButtonWrapper>
+                    )}
                     {Array.from({ length: 3 }, (_, i) => i).map(i => {
                       if (i < amount) {
                         return <FilledCardSlot />;
@@ -104,18 +108,20 @@ export default function CardsList({
                         return <EmptyCardSlot />;
                       }
                     })}
-                    <AddSubtractButtonWrapper
-                      disabled={amount === 3}
-                      onPress={() => {
-                        onAddCard?.(item.cardCode);
-                      }}>
-                      <PlusIcon
-                        width={normalize(18)}
-                        height={normalize(18)}
-                        stroke={theme.colors.text_default}
-                        fill={theme.colors.text_default}
-                      />
-                    </AddSubtractButtonWrapper>
+                    {!disableEdit && (
+                      <AddSubtractButtonWrapper
+                        disabled={amount === 3}
+                        onPress={() => {
+                          onAddCard?.(item.cardCode);
+                        }}>
+                        <PlusIcon
+                          width={normalize(18)}
+                          height={normalize(18)}
+                          stroke={theme.colors.text_default}
+                          fill={theme.colors.text_default}
+                        />
+                      </AddSubtractButtonWrapper>
+                    )}
                   </Box>
                 )}
               </Box>

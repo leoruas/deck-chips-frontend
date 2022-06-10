@@ -94,4 +94,7 @@ export default {
     total_cost: 'Total Cost',
     amount_essences: '{{amount}} essences',
   },
+  community: {
+    title: 'COMMUNITY',
+  },
 };

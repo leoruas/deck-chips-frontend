@@ -11,9 +11,15 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { IDeckType } from '@shared/types/cards.types';
 import { getDecks } from '@app/api/services/decks/get-decks.service';
+import { useDeck } from '@shared/contexts/DeckContext';
 
-export default function DecksList() {
+type DeckListProps = {
+  communityView?: boolean;
+};
+
+export default function DecksList({ communityView }: DeckListProps) {
   const navigation = useNavigation();
+  const { setDeck } = useDeck();
   const [decks, setDecks] = useState<IDeckType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const isFocused = useIsFocused();
@@ -47,8 +53,10 @@ export default function DecksList() {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  // setDeck(item);
-                  // navigation.navigate('EditDeck');
+                  setDeck(item);
+                  navigation.navigate('EditDeck', {
+                    disableEdit: true,
+                  });
                 }}>
                 <Box my="sm">
                   <StarIconWrapper
@@ -68,7 +76,15 @@ export default function DecksList() {
                     />
                   </StarIconWrapper>
                   <Deck source={{ uri: item.coverUrl }} />
-                  <Text textAlign="center">{item.title}</Text>
+                  <Text mt="md" textAlign="center" variant="title">
+                    {item.title}
+                  </Text>
+                  {communityView && (
+                    //TODO: implement deck owner username
+                    <Text mt="sm" textAlign="center">
+                      by username
+                    </Text>
+                  )}
                 </Box>
               </TouchableOpacity>
             );
