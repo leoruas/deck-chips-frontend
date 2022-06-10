@@ -27,7 +27,14 @@ export default function MyDecks() {
 
       <BottomButton
         onPress={() => {
-          navigation.navigate('EditDeck');
+          navigation.navigate('EditDeck', {
+            deck: {
+              _id: '',
+              title: 'Deck Name',
+              coverCardCode: '',
+              cards: [],
+            },
+          });
         }}>
         <PlusIcon
           width={normalize(40)}

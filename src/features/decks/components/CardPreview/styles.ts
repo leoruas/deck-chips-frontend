@@ -8,7 +8,7 @@ const WIDTH = Dimensions.get('window').width;
 export const CardImage = styled(FastImage).attrs({
   resizeMode: 'cover',
 })`
-  width: ${WIDTH * 0.75}px;
+  width: ${WIDTH * 0.9}px;
   height: ${getPixelValue(60)};
   align-self: center;
   border-radius: ${getPixelValue(8)};

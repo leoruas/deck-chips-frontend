@@ -17,6 +17,9 @@ type CardsListProps = {
   onEndReached: () => void;
   isLoading: boolean;
   showCardAmount?: boolean;
+  deckCards?: string[];
+  onAddCard?: (cardCode: string) => void;
+  onRemoveCard?: (cardCode: string) => void;
 };
 
 export default function CardsList({
@@ -24,9 +27,15 @@ export default function CardsList({
   onEndReached,
   isLoading,
   showCardAmount,
+  deckCards,
+  onAddCard,
+  onRemoveCard,
 }: CardsListProps) {
   const [selectedCard, setSelectedCard] = useState<IGetCardResponse | undefined>(undefined);
   const cardModalRef = useRef<BottomSheetModal>(null);
+
+  const countOccurrences = (arr: any[], val: any) =>
+    arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
 
   return (
     <Box flex={1}>
@@ -35,6 +44,8 @@ export default function CardsList({
           data={cards}
           onEndReached={onEndReached}
           renderItem={({ item, index }) => {
+            let amount = countOccurrences(deckCards ?? [], item.cardCode);
+
             return (
               <Box>
                 <TouchableOpacity
@@ -47,7 +58,11 @@ export default function CardsList({
                 </TouchableOpacity>
                 {showCardAmount && (
                   <Box flexDirection="row" justifyContent="center" alignItems="center" my="sm">
-                    <AddSubtractButtonWrapper>
+                    <AddSubtractButtonWrapper
+                      disabled={amount === 0}
+                      onPress={() => {
+                        onRemoveCard?.(item.cardCode);
+                      }}>
                       <MinusIcon
                         width={normalize(14)}
                         height={normalize(14)}
@@ -55,10 +70,18 @@ export default function CardsList({
                         fill={theme.colors.text_default}
                       />
                     </AddSubtractButtonWrapper>
-                    <FilledCardSlot />
-                    <EmptyCardSlot />
-                    <EmptyCardSlot />
-                    <AddSubtractButtonWrapper>
+                    {Array.from({ length: 3 }, (_, i) => i).map(i => {
+                      if (i < amount) {
+                        return <FilledCardSlot />;
+                      } else {
+                        return <EmptyCardSlot />;
+                      }
+                    })}
+                    <AddSubtractButtonWrapper
+                      disabled={amount === 3}
+                      onPress={() => {
+                        onAddCard?.(item.cardCode);
+                      }}>
                       <PlusIcon
                         width={normalize(18)}
                         height={normalize(18)}

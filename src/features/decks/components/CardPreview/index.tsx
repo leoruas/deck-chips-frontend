@@ -2,11 +2,19 @@ import { theme } from '@app/theme';
 import { Box } from '@shared/components/layout/Box';
 import Text from '@shared/components/Text';
 import { normalize } from '@shared/helpers/normalize-pixels';
+import { IGetCardResponse } from '@shared/types/cards.types';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { CardImage, CircleButtonWrapper, ManaCostGemImage } from './styles';
 
-export default function CardPreview() {
+type CardPreviewProps = {
+  card: IGetCardResponse;
+  amount: number;
+};
+
+export default function CardPreview({ card, amount }: CardPreviewProps) {
+  const color = theme.colors[card.regionRef[0]];
+
   return (
     <Box flexDirection="row" alignItems="center" my="sm">
       <Box flex={1}>
@@ -20,11 +28,7 @@ export default function CardPreview() {
             height: '100%',
             borderRadius: normalize(8),
           }}
-          colors={[
-            theme.colors.PiltoverZaun,
-            `${theme.colors.PiltoverZaun}${theme.colors.opacity75}`,
-            `transparent`,
-          ]}
+          colors={[color, `${color}${theme.colors.opacity75}`, `transparent`]}
         />
         <Box
           alignItems="center"
@@ -46,16 +50,15 @@ export default function CardPreview() {
                 height: normalize(40),
                 width: '100%',
               }}>
-              <Text color="white">1</Text>
+              <Text color="white">{card.cost}</Text>
             </Box>
             <ManaCostGemImage />
           </Box>
           <Text color="white" ml="md" numberOfLines={1}>
-            Daring Poro
+            {card.name}
           </Text>
         </Box>
-        <CardImage
-          source={{ uri: 'https://dd.b.pvp.net/3_4_0/set1/en_us/img/cards/01PZ020-full.png' }}>
+        <CardImage source={{ uri: card.assets[0].fullAbsolutePath }}>
           <Box
             bg="bg_primary"
             style={{
@@ -66,13 +69,10 @@ export default function CardPreview() {
               top: normalize(8),
               borderRadius: normalize(5),
             }}>
-            <Text color="white">3</Text>
+            <Text color="white">{amount}</Text>
           </Box>
         </CardImage>
       </Box>
-      <CircleButtonWrapper>
-        <Text>-1</Text>
-      </CircleButtonWrapper>
     </Box>
   );
 }

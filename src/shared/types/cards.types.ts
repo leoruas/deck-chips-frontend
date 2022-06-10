@@ -32,3 +32,11 @@ export interface IGetCardResponse {
   collectible: boolean;
   set: string;
 }
+
+export interface IDeckType {
+  _id: string;
+  title: string;
+  coverCardCode: string;
+  coverUrl?: string;
+  cards: string[];
+}

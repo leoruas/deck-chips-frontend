@@ -2,20 +2,20 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeDrawer from './HomeDrawer';
 import MyDecksDrawer from './MyDecksDrawer';
-import EditDeckDrawer from './EditDeckDrawer';
+import EditDeckDrawer, { EditDeckProps } from './EditDeckDrawer';
 import MyFavorites from '@features/favorites/screens/MyFavorites';
 import Settings from '@features/settings/screens/Settings';
 import DeckInfo from '@features/decks/screens/DeckInfo';
-import DeckCards from '@features/decks/screens/DeckCards';
+import DeckCards, { DeckCardsProps } from '@features/decks/screens/DeckCards';
 
 export type DefaultStackParamList = {
   Home: undefined;
   MyFavorites: undefined;
   MyDecks: undefined;
   Settings: undefined;
-  EditDeck: undefined;
+  EditDeck: EditDeckProps;
   DeckInfo: undefined;
-  DeckCards: undefined;
+  DeckCards: DeckCardsProps;
 };
 
 const Stack = createNativeStackNavigator<DefaultStackParamList>();
