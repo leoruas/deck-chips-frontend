@@ -18,17 +18,12 @@ import { debounce } from 'lodash';
 import { useFilters } from '@shared/contexts/FilterContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { DefaultStackParamList } from '@app/routes/Default.routes';
+import { useDeck } from '@shared/contexts/DeckContext';
 
-export type EditDeckProps = {
-  deck: IDeckType;
-};
-
-type PageProps = NativeStackScreenProps<DefaultStackParamList, 'EditDeck'>;
-
-export default function EditDeck({ route }: PageProps) {
+export default function EditDeck() {
   const { t } = useTranslation('edit_deck');
   const navigation = useNavigation();
-  const { deck } = route.params;
+  const { deck } = useDeck();
 
   const [page, setPage] = useState(1);
   const [cards, setCards] = useState<IGetCardResponse[]>([]);
@@ -37,7 +32,7 @@ export default function EditDeck({ route }: PageProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { currentFilterOption, currentFilterValue, resetFilters } = useFilters();
   const isFocused = useIsFocused();
-  const [deckCards, setDeckCards] = useState([...deck.cards]);
+  const [deckCards, setDeckCards] = useState(deck?.cards ? [...deck.cards] : []);
 
   const fetchCards = async (pageNum: number, name: string) => {
     setIsLoading(true);
@@ -114,7 +109,7 @@ export default function EditDeck({ route }: PageProps) {
           onPress={() => {
             navigation.navigate('DeckCards', {
               deckCards,
-              deckTitle: deck.title,
+              deckTitle: deck?.title ?? '',
             });
           }}>
           <Text numberOfLines={1}>{t('cards')}</Text>
@@ -129,7 +124,10 @@ export default function EditDeck({ route }: PageProps) {
         </SaveButtonWrapper>
         <BottomBarTextButton
           onPress={() => {
-            navigation.navigate('DeckInfo');
+            navigation.navigate('DeckInfo', {
+              deckCards,
+              deckTitle: deck?.title ?? '',
+            });
           }}>
           <Text numberOfLines={1}>{t('info')}</Text>
         </BottomBarTextButton>

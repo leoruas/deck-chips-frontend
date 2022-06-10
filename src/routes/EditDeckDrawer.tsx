@@ -9,15 +9,7 @@ import { DefaultStackParamList } from './Default.routes';
 
 const RightDrawer = createDrawerNavigator();
 
-export type EditDeckProps = {
-  deck: IDeckType;
-};
-
-type PageProps = NativeStackScreenProps<DefaultStackParamList, 'EditDeck'>;
-
-export default function RightDrawerScreen({ route }: PageProps) {
-  const params = route.params;
-
+export default function RightDrawerScreen() {
   return (
     <RightDrawer.Navigator
       screenOptions={{
@@ -29,11 +21,7 @@ export default function RightDrawerScreen({ route }: PageProps) {
         swipeEnabled: false,
       }}
       drawerContent={() => <DrawerFilters />}>
-      <RightDrawer.Screen
-        name="EditDeckDrawer"
-        initialParams={{ ...params }}
-        component={EditDeck}
-      />
+      <RightDrawer.Screen name="EditDeckDrawer" component={EditDeck} />
     </RightDrawer.Navigator>
   );
 }

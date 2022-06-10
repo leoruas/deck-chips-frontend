@@ -10,9 +10,12 @@ import { normalize } from '@shared/helpers/normalize-pixels';
 import { BottomButton } from './styles';
 import DecksList from '@shared/components/DecksList';
 import { useNavigation } from '@react-navigation/native';
+import { useDeck } from '@shared/contexts/DeckContext';
 
 export default function MyDecks() {
   const navigation = useNavigation();
+  const { setNewDeck } = useDeck();
+
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
       <StatusBar backgroundColor={theme.colors.bg_primary} />
@@ -27,14 +30,8 @@ export default function MyDecks() {
 
       <BottomButton
         onPress={() => {
-          navigation.navigate('EditDeck', {
-            deck: {
-              _id: '',
-              title: 'Deck Name',
-              coverCardCode: '',
-              cards: [],
-            },
-          });
+          setNewDeck();
+          navigation.navigate('EditDeck');
         }}>
         <PlusIcon
           width={normalize(40)}
