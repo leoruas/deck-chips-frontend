@@ -13,7 +13,7 @@ import { normalize } from '@shared/helpers/normalize-pixels';
 import { useTranslation } from 'react-i18next';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { getCards } from '@app/api/services/cards/get-cards.service';
-import { IDeckType, IGetCardResponse } from '@shared/types/cards.types';
+import { IGetCardResponse } from '@shared/types/cards.types';
 import { debounce } from 'lodash';
 import { useFilters } from '@shared/contexts/FilterContext';
 import { useDeck } from '@shared/contexts/DeckContext';

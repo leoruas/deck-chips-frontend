@@ -50,11 +50,12 @@ const CardModal: ForwardRefRenderFunction<BottomSheetModal, CardModalProps> = ({
   // const [isFavorite, setIsFavorite] = useState(card?.isFavorite);
   //TODO: implement favorite
   const [isFavorite, setIsFavorite] = useState(false);
+  const snapPoints = useMemo(() => ['100%'], []);
 
   return (
     <BottomSheetModal
       ref={bottomSheetRef}
-      snapPoints={['100%']}
+      snapPoints={snapPoints}
       backgroundComponent={() => <Box opacity={0} />}
       handleComponent={null}
       enablePanDownToClose={false}
@@ -110,8 +111,18 @@ const CardModal: ForwardRefRenderFunction<BottomSheetModal, CardModalProps> = ({
 
             <Divider my="lg" />
 
-            <Text variant="title">{t('card_info.keywords')}</Text>
-            <Text mt="md">{card?.keywords}</Text>
+            {card?.keywords && card?.keywords.length > 0 && (
+              <Box>
+                <Text variant="title">{t('card_info.keywords')}</Text>
+                {card?.keywords.map(keyword => {
+                  return (
+                    <Text mt="md" mr="md">
+                      - {keyword}
+                    </Text>
+                  );
+                })}
+              </Box>
+            )}
 
             <Text variant="title" mt="lg">
               {t('card_info.description')}

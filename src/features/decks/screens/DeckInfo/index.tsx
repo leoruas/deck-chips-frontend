@@ -52,13 +52,11 @@ export default function DeckInfo({ route }: PageProps) {
         label === '10'
           ? cardsData.filter(card => card.card.cost >= parseInt(label))
           : cardsData.filter(card => {
-              console.log(card.card.cost);
               return card.card.cost === parseInt(label);
             });
 
       return cardsOfCost.reduce((a, b) => a + b.amount, 0);
     });
-    console.log(data);
     setGraphData({
       labels,
       datasets: [
@@ -97,7 +95,7 @@ export default function DeckInfo({ route }: PageProps) {
   }, []);
 
   const spellsAmount = useMemo(() => {
-    if (!cards.length) return [];
+    if (!cards.length) return 0;
 
     const totalCards = cards.filter(({ card }) => card.type === 'Spell');
 
@@ -105,7 +103,7 @@ export default function DeckInfo({ route }: PageProps) {
   }, [cards]);
 
   const championsAmount = useMemo(() => {
-    if (!cards.length) return [];
+    if (!cards.length) return 0;
 
     const totalCards = cards.filter(
       ({ card }) => card.type === 'Unit' && card.rarityRef === 'Champion',
@@ -115,7 +113,7 @@ export default function DeckInfo({ route }: PageProps) {
   }, [cards]);
 
   const unitsAmount = useMemo(() => {
-    if (!cards.length) return [];
+    if (!cards.length) return 0;
 
     const totalCards = cards.filter(
       ({ card }) => card.type === 'Unit' && card.rarityRef !== 'Champion',
@@ -125,7 +123,7 @@ export default function DeckInfo({ route }: PageProps) {
   }, [cards]);
 
   const landmarksAmount = useMemo(() => {
-    if (!cards.length) return [];
+    if (!cards.length) return 0;
 
     const totalCards = cards.filter(({ card }) => card.type === 'Landmark');
 
@@ -133,7 +131,7 @@ export default function DeckInfo({ route }: PageProps) {
   }, [cards]);
 
   const commonsAmount = useMemo(() => {
-    if (!cards.length) return [];
+    if (!cards.length) return 0;
 
     const totalCards = cards.filter(({ card }) => card.rarityRef === 'Common');
 
@@ -141,7 +139,7 @@ export default function DeckInfo({ route }: PageProps) {
   }, [cards]);
 
   const raresAmount = useMemo(() => {
-    if (!cards.length) return [];
+    if (!cards.length) return 0;
 
     const totalCards = cards.filter(({ card }) => card.rarityRef === 'Rare');
 
@@ -149,20 +147,12 @@ export default function DeckInfo({ route }: PageProps) {
   }, [cards]);
 
   const epicsAmount = useMemo(() => {
-    if (!cards.length) return [];
+    if (!cards.length) return 0;
 
     const totalCards = cards.filter(({ card }) => card.rarityRef === 'Epic');
 
     return totalCards.reduce((a, b) => a + b.amount, 0);
   }, [cards]);
-
-  if (loading) {
-    return (
-      <Box flex={1} bg="bg_primary">
-        <ActivityIndicator color={theme.colors.text_default} size="large" />
-      </Box>
-    );
-  }
 
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
@@ -172,42 +162,49 @@ export default function DeckInfo({ route }: PageProps) {
         <ScrollView showsVerticalScrollIndicator={false}>
           <DeckAppBar title={deckTitle} />
           <Divider my="md" />
-          <Box flexDirection="row" alignItems="center" mt="md">
-            <Text variant="title" mr="lg">
-              {t('mana_cost')}
-            </Text>
-            <FlexDivider />
-          </Box>
-          <BarChart
-            style={{
-              marginLeft: normalize(-50),
-            }}
-            fromZero
-            data={graphData}
-            width={WIDTH}
-            height={220}
-            yAxisLabel=""
-            yAxisSuffix=""
-            chartConfig={{
-              backgroundGradientFrom: 'transparent',
-              backgroundGradientFromOpacity: 0,
-              backgroundGradientTo: 'transparent',
-              backgroundGradientToOpacity: 0,
-              color: () => `rgba(107, 189, 226)`,
-              labelColor: () => theme.colors.text_default,
-              propsForLabels: {
-                fontSize: normalize(20),
-              },
-              barPercentage: 0.6,
-              fillShadowGradientToOpacity: 0.7,
-              fillShadowGradientFromOpacity: 1,
-            }}
-            withHorizontalLabels={false}
-            showValuesOnTopOfBars
-            withInnerLines={false}
-          />
 
-          {/* <Box flexDirection="row" alignItems="center" mt="md">
+          {loading ? (
+            <Box flex={1} bg="bg_primary">
+              <ActivityIndicator color={theme.colors.text_default} size="large" />
+            </Box>
+          ) : (
+            <Box>
+              <Box flexDirection="row" alignItems="center" mt="md">
+                <Text variant="title" mr="lg">
+                  {t('mana_cost')}
+                </Text>
+                <FlexDivider />
+              </Box>
+              <BarChart
+                style={{
+                  marginLeft: normalize(-50),
+                }}
+                fromZero
+                data={graphData}
+                width={WIDTH}
+                height={220}
+                yAxisLabel=""
+                yAxisSuffix=""
+                chartConfig={{
+                  backgroundGradientFrom: 'transparent',
+                  backgroundGradientFromOpacity: 0,
+                  backgroundGradientTo: 'transparent',
+                  backgroundGradientToOpacity: 0,
+                  color: () => `rgba(107, 189, 226)`,
+                  labelColor: () => theme.colors.text_default,
+                  propsForLabels: {
+                    fontSize: normalize(20),
+                  },
+                  barPercentage: 0.6,
+                  fillShadowGradientToOpacity: 0.7,
+                  fillShadowGradientFromOpacity: 1,
+                }}
+                withHorizontalLabels={false}
+                showValuesOnTopOfBars
+                withInnerLines={false}
+              />
+
+              {/* <Box flexDirection="row" alignItems="center" mt="md">
             <Text variant="title" mr="lg">
               {t('regions')}
             </Text>
@@ -215,33 +212,33 @@ export default function DeckInfo({ route }: PageProps) {
           </Box>
           <RenderRegions /> */}
 
-          <Box flexDirection="row" alignItems="center" mt="md">
-            <Text variant="title" mr="lg">
-              {t('type')}
-            </Text>
-            <FlexDivider />
-          </Box>
-          <RenderTypes
-            championsAmount={championsAmount ?? 0}
-            unitsAmount={unitsAmount ?? 0}
-            spellsAmount={spellsAmount ?? 0}
-            landmarksAmount={landmarksAmount ?? 0}
-          />
+              <Box flexDirection="row" alignItems="center" mt="md">
+                <Text variant="title" mr="lg">
+                  {t('type')}
+                </Text>
+                <FlexDivider />
+              </Box>
+              <RenderTypes
+                championsAmount={championsAmount}
+                unitsAmount={unitsAmount}
+                spellsAmount={spellsAmount}
+                landmarksAmount={landmarksAmount}
+              />
 
-          <Box flexDirection="row" alignItems="center" mt="md">
-            <Text variant="title" mr="lg">
-              {t('rarity')}
-            </Text>
-            <FlexDivider />
-          </Box>
-          <RenderRarities
-            championsAmount={championsAmount ?? 0}
-            raresAmount={raresAmount ?? 0}
-            commonsAmount={commonsAmount ?? 0}
-            epicsAmount={epicsAmount ?? 0}
-          />
+              <Box flexDirection="row" alignItems="center" mt="md">
+                <Text variant="title" mr="lg">
+                  {t('rarity')}
+                </Text>
+                <FlexDivider />
+              </Box>
+              <RenderRarities
+                championsAmount={championsAmount}
+                raresAmount={raresAmount}
+                commonsAmount={commonsAmount}
+                epicsAmount={epicsAmount}
+              />
 
-          {/* <Box flexDirection="row" alignItems="center" mt="md">
+              {/* <Box flexDirection="row" alignItems="center" mt="md">
             <Text variant="title" mr="lg">
               {t('total_cost')}
             </Text>
@@ -251,6 +248,8 @@ export default function DeckInfo({ route }: PageProps) {
             <EssenceImage />
             <Text>{t('amount_essences', { amount: 2000 })}</Text>
           </Box> */}
+            </Box>
+          )}
         </ScrollView>
       </Box>
     </SafeAreaBox>

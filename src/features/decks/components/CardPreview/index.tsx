@@ -4,6 +4,7 @@ import Text from '@shared/components/Text';
 import { normalize } from '@shared/helpers/normalize-pixels';
 import { IGetCardResponse } from '@shared/types/cards.types';
 import React from 'react';
+import { ActivityIndicator } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { CardImage, CircleButtonWrapper, ManaCostGemImage } from './styles';
 
@@ -14,6 +15,7 @@ type CardPreviewProps = {
 
 export default function CardPreview({ card, amount }: CardPreviewProps) {
   const color = theme.colors[card.regionRef[0]];
+  const [imageLoading, setImageLoading] = React.useState(true);
 
   return (
     <Box flexDirection="row" alignItems="center" my="sm">
@@ -58,7 +60,9 @@ export default function CardPreview({ card, amount }: CardPreviewProps) {
             {card.name}
           </Text>
         </Box>
-        <CardImage source={{ uri: card.assets[0].fullAbsolutePath }}>
+        <CardImage
+          source={{ uri: card.assets[0].fullAbsolutePath }}
+          onLoadEnd={() => setImageLoading(false)}>
           <Box
             bg="bg_primary"
             style={{
@@ -71,6 +75,11 @@ export default function CardPreview({ card, amount }: CardPreviewProps) {
             }}>
             <Text color="white">{amount}</Text>
           </Box>
+          {imageLoading && (
+            <Box flex={1} justifyContent="center">
+              <ActivityIndicator size="large" color="white" />
+            </Box>
+          )}
         </CardImage>
       </Box>
     </Box>

@@ -83,7 +83,7 @@ export default function CardsList({
                       cardModalRef.current?.present();
                     }
                   }}>
-                  <Card source={{ uri: item.assets[0].gameAbsolutePath }} />
+                  <RenderCard uri={item.assets[0].gameAbsolutePath} />
                 </TouchableOpacity>
                 {showCardAmount && (
                   <Box flexDirection="row" justifyContent="center" alignItems="center" my="sm">
@@ -142,3 +142,20 @@ export default function CardsList({
     </Box>
   );
 }
+
+type RenderCardProps = {
+  uri: string;
+};
+const RenderCard = ({ uri }: RenderCardProps) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <Card source={{ uri }} onLoadEnd={() => setIsLoading(false)}>
+      {isLoading && (
+        <Box flex={1} justifyContent="center">
+          <ActivityIndicator size="large" color="white" />
+        </Box>
+      )}
+    </Card>
+  );
+};
