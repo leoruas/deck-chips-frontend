@@ -14,27 +14,14 @@ import { getDecks } from '@app/api/services/decks/get-decks.service';
 import { useDeck } from '@shared/contexts/DeckContext';
 
 type DeckListProps = {
+  decks: IDeckType[];
+  isLoading: boolean;
   communityView?: boolean;
 };
 
-export default function DecksList({ communityView }: DeckListProps) {
+export default function DecksList({ decks, isLoading, communityView }: DeckListProps) {
   const navigation = useNavigation();
   const { setDeck } = useDeck();
-  const [decks, setDecks] = useState<IDeckType[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const isFocused = useIsFocused();
-
-  const fetchDecks = async () => {
-    setIsLoading(true);
-    const decks = await getDecks();
-
-    setDecks(decks);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchDecks();
-  }, [isFocused]);
 
   if (isLoading) {
     return (

@@ -124,7 +124,6 @@ export default function EditDeck({ route }: PageProps) {
         </BottomBarTextButton>
         <SaveButtonWrapper
           onPress={async () => {
-            console.log('here', disableEdit);
             if (disableEdit) {
               return;
             }
