@@ -43,6 +43,7 @@ export default {
       keywords: 'Palavras Chave',
       description: 'Descrição',
     },
+    no_decks: 'Nenhum deck encontrado',
   },
   signup: {
     deck_chips: 'DECK CHIPS',

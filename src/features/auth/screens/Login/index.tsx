@@ -20,7 +20,7 @@ export default function Login() {
 
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { setIsLoggedIn, setAuthData } = useAuth();
+  const { setAuthData, joinAsGuest } = useAuth();
 
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
@@ -85,7 +85,7 @@ export default function Login() {
 
               setTimeout(() => {
                 setIsLoading(false);
-                setIsLoggedIn(true);
+                joinAsGuest();
               }, 1500);
             }}>
             {t('join_as_guest')}

@@ -6,6 +6,8 @@ type SaveDeckProps = {
   title: string;
   cards: string[];
   coverCardCode: string;
+  userId?: string;
+  userName?: string;
 };
 export const updateDeck = async ({ ...params }: SaveDeckProps) => {
   try {

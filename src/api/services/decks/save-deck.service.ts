@@ -4,7 +4,10 @@ type SaveDeckProps = {
   title: string;
   cards: string[];
   coverCardCode: string;
+  userId?: string;
+  userName?: string;
 };
+
 export const saveDeck = async ({ ...params }: SaveDeckProps) => {
   try {
     await api.post(`decks/`, {

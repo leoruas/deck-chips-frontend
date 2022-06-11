@@ -22,6 +22,7 @@ import Loader from '@shared/components/Loader';
 import { DefaultStackParamList } from '@app/routes/Default.routes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { updateDeck } from '@app/api/services/decks/update-deck.service';
+import { useAuth } from '@shared/contexts/AuthContext';
 
 type PageProps = NativeStackScreenProps<DefaultStackParamList, 'EditDeck'>;
 
@@ -43,6 +44,7 @@ export default function EditDeck({ route }: PageProps) {
   const { currentFilterOption, currentFilterValue, resetFilters } = useFilters();
   const isFocused = useIsFocused();
   const [deckCards, setDeckCards] = useState(deck?.cards ? [...deck.cards] : []);
+  const { authData } = useAuth();
 
   const fetchCards = async (pageNum: number, name: string) => {
     setIsFetching(true);
@@ -142,12 +144,16 @@ export default function EditDeck({ route }: PageProps) {
                 title: deck?.title ?? 'New Deck',
                 coverCardCode,
                 cards: deckCards.slice(0, 40),
+                userName: authData?.username,
+                userId: authData?.id,
               });
             } else {
               await saveDeck({
                 title: deck?.title ?? 'New Deck',
                 coverCardCode,
                 cards: deckCards.slice(0, 40),
+                userName: authData?.username,
+                userId: authData?.id,
               });
             }
             setIsLoading(false);

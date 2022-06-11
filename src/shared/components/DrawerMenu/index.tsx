@@ -34,7 +34,7 @@ export default function DrawerMenu() {
 
         <Box ml="md">
           {/* TODO: Add username and email */}
-          <Text numberOfLines={1}>Username</Text>
+          <Text numberOfLines={1}>{authData?.username}</Text>
           <Text numberOfLines={1} fontSize={normalize(14)}>
             {authData?.email}
           </Text>

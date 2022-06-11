@@ -12,10 +12,12 @@ import { AuthProvider } from '@shared/contexts/AuthContext';
 import { FilterProvider } from '@shared/contexts/FilterContext';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { DeckProvider } from '@shared/contexts/DeckContext';
+import { LogBox } from 'react-native';
 
 const App = () => {
   useEffect(() => {
     Orientation.lockToPortrait();
+    LogBox.ignoreAllLogs();
   }, []);
 
   return (

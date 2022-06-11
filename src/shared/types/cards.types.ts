@@ -39,4 +39,6 @@ export interface IDeckType {
   coverCardCode: string;
   coverUrl?: string;
   cards: string[];
+  userName: string;
+  userId: string;
 }

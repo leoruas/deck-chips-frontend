@@ -14,6 +14,7 @@ import { useDeck } from '@shared/contexts/DeckContext';
 import { getDecks } from '@app/api/services/decks/get-decks.service';
 import { IDeckType } from '@shared/types/cards.types';
 import { debounce } from 'lodash';
+import { useAuth } from '@shared/contexts/AuthContext';
 
 export default function MyDecks() {
   const navigation = useNavigation();
@@ -22,10 +23,12 @@ export default function MyDecks() {
   const [decks, setDecks] = useState<IDeckType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const isFocused = useIsFocused();
+  const { authData } = useAuth();
 
   const fetchDecks = async (title: string) => {
     setIsLoading(true);
-    const decks = await getDecks({ search: title });
+    const userId = authData?.id;
+    const decks = await getDecks({ search: title, userId });
 
     setDecks(decks);
     setIsLoading(false);

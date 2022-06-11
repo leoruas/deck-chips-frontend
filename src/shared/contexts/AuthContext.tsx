@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
 
 interface AuthData {
-  email: string;
+  email?: string;
+  username?: string;
+  id?: string;
 }
 
 interface AuthContextType {
@@ -9,6 +11,7 @@ interface AuthContextType {
   setIsLoggedIn: (val: boolean) => void;
   authData?: AuthData;
   setAuthData: (val: AuthData) => void;
+  joinAsGuest: () => void;
 }
 
 export interface AuthProviderProps {
@@ -21,6 +24,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authData, setAuthData] = useState<AuthData | undefined>(undefined);
 
+  const joinAsGuest = () => {
+    const id = generateId();
+    const username = 'guest-' + id;
+    setAuthData({
+      id,
+      username,
+    });
+    setIsLoggedIn(true);
+  };
+
+  const generateId = () => {
+    return new Date().valueOf().toString().split('').reverse().join('').slice(0, 6);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -28,6 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setIsLoggedIn,
         authData,
         setAuthData,
+        joinAsGuest,
       }}>
       {children}
     </AuthContext.Provider>
