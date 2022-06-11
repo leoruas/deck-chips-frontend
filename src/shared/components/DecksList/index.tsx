@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatGrid } from 'react-native-super-grid';
 import { Box } from '../layout/Box';
 import GradientBox from '../layout/GradientBox';
 import Text from '../Text';
-import StarIcon from '@assets/icons/star.svg';
-import { Deck, StarIconWrapper } from './styles';
+import DeleteIcon from '@assets/icons/close.svg';
+import { Deck, DeleteIconWrapper } from './styles';
 import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
 import { useNavigation } from '@react-navigation/native';
@@ -12,14 +12,16 @@ import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { IDeckType } from '@shared/types/cards.types';
 import { useDeck } from '@shared/contexts/DeckContext';
 import { useTranslation } from 'react-i18next';
+import { deleteDeck } from '@app/api/services/decks/delete-deck.service';
 
 type DeckListProps = {
   decks: IDeckType[];
   isLoading: boolean;
   communityView?: boolean;
+  refetch?: () => void;
 };
 
-export default function DecksList({ decks, isLoading, communityView }: DeckListProps) {
+export default function DecksList({ decks, isLoading, communityView, refetch }: DeckListProps) {
   const navigation = useNavigation();
   const { setDeck } = useDeck();
   const { t } = useTranslation('shared');
@@ -52,22 +54,15 @@ export default function DecksList({ decks, isLoading, communityView }: DeckListP
                   });
                 }}>
                 <Box my="sm" flex={1}>
-                  <StarIconWrapper
-                    onPress={() => {
-                      // if (item.isFavorite) {
-                      //   setDecks(prev => {
-                      //     return prev.filter((_, i) => i !== index);
-                      //   });
-                      //   decks.splice(index, 1);
-                      // }
-                    }}>
-                    <StarIcon
-                      width={normalize(40)}
-                      height={normalize(40)}
-                      stroke={theme.colors.dark_grey}
-                      fill={false ? theme.colors.favorite : theme.colors.light_grey}
-                    />
-                  </StarIconWrapper>
+                  {!communityView && (
+                    <DeleteIconWrapper
+                      onPress={async () => {
+                        await deleteDeck(item._id);
+                        refetch?.();
+                      }}>
+                      <DeleteIcon width={normalize(40)} height={normalize(40)} fill={'#b51b10'} />
+                    </DeleteIconWrapper>
+                  )}
                   <RenderDeck uri={item.coverUrl} />
                   <Text mt="md" flexShrink={1} numberOfLines={1} textAlign="center" variant="title">
                     {item.title}

@@ -60,7 +60,7 @@ export default function MyDecks() {
 
         <Spacer height={12} />
 
-        <DecksList decks={decks} isLoading={isLoading} />
+        <DecksList decks={decks} isLoading={isLoading} refetch={() => fetchDecks(search)} />
       </Box>
 
       <BottomButton

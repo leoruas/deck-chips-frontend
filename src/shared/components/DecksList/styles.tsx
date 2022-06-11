@@ -17,7 +17,7 @@ export const Deck = styled(FastImage).attrs({
   border-color: ${({ theme }) => theme.colors.text_default + theme.colors.opacity75};
 `;
 
-export const StarIconWrapper = styled.TouchableOpacity`
+export const DeleteIconWrapper = styled.TouchableOpacity`
   position: absolute;
   z-index: 10;
   right: ${getPixelValue(15)};
