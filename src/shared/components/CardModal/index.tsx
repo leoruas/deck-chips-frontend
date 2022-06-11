@@ -18,6 +18,7 @@ import React, {
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  ActivityIndicator,
   Dimensions,
   ScrollView,
   TouchableOpacity,
@@ -174,52 +175,77 @@ const CardsSlider = ({ card }: CardsSliderProps) => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   return (
-    <Animated.FlatList
-      data={images}
-      snapToStart
-      snapToInterval={CARD_WIDTH}
-      decelerationRate={0}
-      bounces={false}
-      scrollEventThrottle={16}
-      onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-        useNativeDriver: true,
-      })}
-      renderItem={({ item, index }) => {
-        if (index === 0 || index === images.length - 1) {
-          return <View style={{ width: CARD_SPACER_SIZE }} />;
-        }
-        const inputRange = [(index - 2) * CARD_WIDTH, (index - 1) * CARD_WIDTH, index * CARD_WIDTH];
-        const translateY = scrollX.interpolate({
-          inputRange,
-          outputRange: [0, normalize(-50), 0],
-        });
-        return (
-          <Box>
-            <Animated.View
-              // @ts-ignore
-              style={{
-                flex: 1,
-                transform: [{ translateY }],
-              }}>
-              <Box
-                flex={1}
+    <Box>
+      <Animated.FlatList
+        data={images}
+        snapToStart
+        snapToInterval={CARD_WIDTH}
+        decelerationRate={0}
+        bounces={false}
+        scrollEventThrottle={16}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+          useNativeDriver: true,
+        })}
+        renderItem={({ item, index }) => {
+          if (index === 0 || index === images.length - 1) {
+            return <View style={{ width: CARD_SPACER_SIZE }} />;
+          }
+          const inputRange = [
+            (index - 2) * CARD_WIDTH,
+            (index - 1) * CARD_WIDTH,
+            index * CARD_WIDTH,
+          ];
+          const translateY = scrollX.interpolate({
+            inputRange,
+            outputRange: [0, normalize(-50), 0],
+          });
+          return (
+            <Box>
+              <Animated.View
+                // @ts-ignore
                 style={{
-                  paddingTop: normalize(50),
+                  flex: 1,
+                  transform: [{ translateY }],
                 }}>
-                <Card
-                  key={`card-modal-item-${index}`}
-                  source={{ uri: item.assets[0].gameAbsolutePath }}
-                  height={CARD_HEIGHT}
-                  width={CARD_WIDTH}
-                />
-              </Box>
-            </Animated.View>
-          </Box>
-        );
-      }}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-    />
+                <Box
+                  flex={1}
+                  style={{
+                    paddingTop: normalize(50),
+                  }}>
+                  <RenderCard
+                    key={`card-modal-item-${index}`}
+                    uri={item.assets[0].gameAbsolutePath}
+                  />
+                </Box>
+              </Animated.View>
+            </Box>
+          );
+        }}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
+    </Box>
+  );
+};
+
+type RenderCardProps = {
+  uri: string;
+};
+const RenderCard = ({ uri }: RenderCardProps) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <Card
+      source={{ uri }}
+      height={CARD_HEIGHT}
+      width={CARD_WIDTH}
+      onLoadEnd={() => setIsLoading(false)}>
+      {isLoading && (
+        <Box flex={1} justifyContent="center">
+          <ActivityIndicator size="large" color="white" />
+        </Box>
+      )}
+    </Card>
   );
 };
 
