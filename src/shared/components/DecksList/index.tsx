@@ -75,7 +75,7 @@ export default function DecksList({ communityView }: DeckListProps) {
                       fill={false ? theme.colors.favorite : theme.colors.light_grey}
                     />
                   </StarIconWrapper>
-                  <Deck source={{ uri: item.coverUrl }} />
+                  <RenderDeck uri={item.coverUrl} />
                   <Text mt="md" textAlign="center" variant="title">
                     {item.title}
                   </Text>
@@ -95,3 +95,20 @@ export default function DecksList({ communityView }: DeckListProps) {
     </Box>
   );
 }
+
+type RenderDeckProps = {
+  uri?: string;
+};
+const RenderDeck = ({ uri }: RenderDeckProps) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <Deck source={{ uri }} onLoadEnd={() => setIsLoading(false)}>
+      {isLoading && (
+        <Box flex={1} justifyContent="center">
+          <ActivityIndicator size="large" color="white" />
+        </Box>
+      )}
+    </Deck>
+  );
+};
