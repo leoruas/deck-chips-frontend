@@ -1,7 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { ICardType, IGetCardResponse } from '@shared/types/cards.types';
-import React, { useEffect, useRef, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { IGetCardResponse } from '@shared/types/cards.types';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import CardModal from '../CardModal';
 import { Box } from '../layout/Box';
@@ -11,70 +11,130 @@ import PlusIcon from '@assets/icons/plus.svg';
 import MinusIcon from '@assets/icons/minus.svg';
 import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
-import { getCards } from '@app/api/services/cards/get-cards.service';
+import { useDeck } from '@shared/contexts/DeckContext';
+import { getCardByCode } from '@app/api/services/cards/get-card-by-code.service';
 
 type CardsListProps = {
+  cards: IGetCardResponse[];
+  onEndReached: () => void;
+  isLoading: boolean;
   showCardAmount?: boolean;
+  disableEdit?: boolean;
+  deckCards?: string[];
+  onAddCard?: (cardCode: string) => void;
+  onRemoveCard?: (cardCode: string) => void;
+  selectable?: boolean;
 };
 
-export default function CardsList({ showCardAmount }: CardsListProps) {
+export default function CardsList({
+  cards,
+  onEndReached,
+  isLoading,
+  showCardAmount,
+  disableEdit,
+  deckCards,
+  onAddCard,
+  onRemoveCard,
+  selectable,
+}: CardsListProps) {
+  const { deck, setDeckCover } = useDeck();
+
   const [selectedCard, setSelectedCard] = useState<IGetCardResponse | undefined>(undefined);
   const cardModalRef = useRef<BottomSheetModal>(null);
-  const [page, setPage] = useState(1);
-  const [cards, setCards] = useState<IGetCardResponse[]>([]);
 
-  const fetchCards = async () => {
-    const cards = await getCards(1);
-    setCards(cards);
+  const fetchInitialCard = async () => {
+    if (!deck) return;
+    const card = await getCardByCode(deck.coverCardCode);
+    setSelectedCard(card);
   };
 
   useEffect(() => {
-    fetchCards();
-  }, []);
+    if (selectable && deck?.coverCardCode) {
+      fetchInitialCard();
+    }
+  }, [deck?.coverCardCode]);
+
+  const countOccurrences = (arr: any[], val: any) =>
+    arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
+  const isSelectedCard = (card: IGetCardResponse) => {
+    return selectedCard?.cardCode === card.cardCode;
+  };
 
   return (
     <Box flex={1}>
       <GradientBox>
         <FlatGrid
           data={cards}
+          onEndReached={onEndReached}
           renderItem={({ item, index }) => {
+            let amount = countOccurrences(deckCards ?? [], item.cardCode);
+            const opacity = selectable && !isSelectedCard(item) ? 0.3 : 1;
+
             return (
-              <Box>
+              <Box opacity={opacity}>
                 <TouchableOpacity
                   key={`home-cards-list-${index}`}
                   onPress={() => {
                     setSelectedCard(item);
-                    cardModalRef.current?.present();
+                    if (selectable) {
+                      setDeckCover(item.cardCode);
+                    } else {
+                      cardModalRef.current?.present();
+                    }
                   }}>
-                  <Card source={{ uri: item.assets[0].gameAbsolutePath }} />
+                  <RenderCard uri={item.assets[0].gameAbsolutePath} />
                 </TouchableOpacity>
                 {showCardAmount && (
                   <Box flexDirection="row" justifyContent="center" alignItems="center" my="sm">
-                    <AddSubtractButtonWrapper>
-                      <MinusIcon
-                        width={normalize(14)}
-                        height={normalize(14)}
-                        stroke={theme.colors.text_default}
-                        fill={theme.colors.text_default}
-                      />
-                    </AddSubtractButtonWrapper>
-                    <FilledCardSlot />
-                    <EmptyCardSlot />
-                    <EmptyCardSlot />
-                    <AddSubtractButtonWrapper>
-                      <PlusIcon
-                        width={normalize(18)}
-                        height={normalize(18)}
-                        stroke={theme.colors.text_default}
-                        fill={theme.colors.text_default}
-                      />
-                    </AddSubtractButtonWrapper>
+                    {!disableEdit && (
+                      <AddSubtractButtonWrapper
+                        disabled={amount === 0}
+                        onPress={() => {
+                          onRemoveCard?.(item.cardCode);
+                        }}>
+                        <MinusIcon
+                          width={normalize(14)}
+                          height={normalize(14)}
+                          stroke={theme.colors.text_default}
+                          fill={theme.colors.text_default}
+                        />
+                      </AddSubtractButtonWrapper>
+                    )}
+                    {Array.from({ length: 3 }, (_, i) => i).map(i => {
+                      if (i < amount) {
+                        return <FilledCardSlot />;
+                      } else {
+                        return <EmptyCardSlot />;
+                      }
+                    })}
+                    {!disableEdit && (
+                      <AddSubtractButtonWrapper
+                        disabled={amount === 3}
+                        onPress={() => {
+                          onAddCard?.(item.cardCode);
+                        }}>
+                        <PlusIcon
+                          width={normalize(18)}
+                          height={normalize(18)}
+                          stroke={theme.colors.text_default}
+                          fill={theme.colors.text_default}
+                        />
+                      </AddSubtractButtonWrapper>
+                    )}
                   </Box>
                 )}
               </Box>
             );
           }}
           showsVerticalScrollIndicator={false}
+          ListFooterComponent={() => {
+            return (
+              <Box flex={1}>
+                {isLoading && <ActivityIndicator color={theme.colors.text_default} size="large" />}
+              </Box>
+            );
+          }}
         />
       </GradientBox>
 
@@ -82,3 +142,20 @@ export default function CardsList({ showCardAmount }: CardsListProps) {
     </Box>
   );
 }
+
+type RenderCardProps = {
+  uri: string;
+};
+const RenderCard = ({ uri }: RenderCardProps) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <Card source={{ uri }} onLoadEnd={() => setIsLoading(false)}>
+      {isLoading && (
+        <Box flex={1} justifyContent="center">
+          <ActivityIndicator size="large" color="white" />
+        </Box>
+      )}
+    </Card>
+  );
+};

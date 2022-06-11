@@ -18,11 +18,5 @@ export type CardType = typeof typesKeys[number];
 export const raritiesKeys = ['Common', 'Rare', 'Epic', 'Champion'] as const;
 export type RarityType = typeof raritiesKeys[number];
 
-export const setsKeys = [
-  'foundations',
-  'rising_tides',
-  'call_of_mountain',
-  'empires_of_ascended',
-  'beyond_bandlewood',
-] as const;
+export const setsKeys = ['Set1', 'Set2', 'Set3', 'Set4', 'Set5'] as const;
 export type SetType = typeof setsKeys[number];

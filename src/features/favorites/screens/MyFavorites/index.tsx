@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Text from '@shared/components/Text';
@@ -10,11 +10,27 @@ import { theme } from '@app/theme';
 import { normalize } from '@shared/helpers/normalize-pixels';
 import { Box } from '@shared/components/layout/Box';
 import DecksList from '@shared/components/DecksList';
+import { getCards } from '@app/api/services/cards/get-cards.service';
+import { IGetCardResponse } from '@shared/types/cards.types';
+import { debounce } from 'lodash';
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function MyFavorites() {
   const { t } = useTranslation('favorites');
+  const [cards, setCards] = useState<IGetCardResponse[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchCards = async (pageNum: number) => {
+    setIsLoading(true);
+    const cards = await getCards({ page: pageNum, limit: 15, name: 'se' });
+    setCards(prev => [...prev, ...cards]);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchCards(1);
+  }, []);
 
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
@@ -46,7 +62,12 @@ export default function MyFavorites() {
             },
             tabBarInactiveTintColor: theme.colors.tabbar_line,
           })}>
-          <Tab.Screen name={t('cards')} children={() => <CardsList />} />
+          <Tab.Screen
+            name={t('cards')}
+            children={() => (
+              <CardsList cards={cards} isLoading={isLoading} onEndReached={() => {}} />
+            )}
+          />
 
           <Tab.Screen name={t('decks')} children={() => <DecksList />} />
         </Tab.Navigator>

@@ -21,7 +21,7 @@ export default {
       Targon: 'Targon',
     },
     types: {
-      follower: 'Seguidor',
+      unit: 'Unidade',
       champion: 'Campeão',
       spell: 'Feitiço',
       landmark: 'Monumento',
@@ -93,5 +93,8 @@ export default {
     rarity: 'Raridade',
     total_cost: 'Custo Total',
     amount_essences: '{{amount}} essências',
+  },
+  community: {
+    title: 'COMUNIDADE',
   },
 };

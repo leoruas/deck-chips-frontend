@@ -16,11 +16,19 @@ import { SvgProps } from 'react-native-svg';
 import { Box } from '../layout/Box';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 
-type ButtonOptions = 'community' | 'decks' | 'filters' | 'home' | 'decks_menu' | 'deck_cover';
+export type SearchBarButtonOptions =
+  | 'community'
+  | 'decks'
+  | 'filters'
+  | 'home'
+  | 'decks_menu'
+  | 'deck_cover';
 
 type SearchBarProps = {
+  text: string;
+  onChangeText: (text: string) => void;
   showMenu?: boolean;
-  rightButtons?: ButtonOptions[];
+  rightButtons?: SearchBarButtonOptions[];
 };
 
 type SearchBarButtonProps = {
@@ -28,15 +36,19 @@ type SearchBarButtonProps = {
   component: React.FC<SvgProps>;
 };
 
-export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProps) {
+export default function SearchBar({
+  text,
+  onChangeText,
+  showMenu,
+  rightButtons = [],
+}: SearchBarProps) {
   const { t } = useTranslation('shared');
   const navigation = useNavigation();
 
-  const buttons: { [key in ButtonOptions]: SearchBarButtonProps } = {
+  const buttons: { [key in SearchBarButtonOptions]: SearchBarButtonProps } = {
     community: {
       onPress: () => {
-        // TODO: Add navigation to community screen
-        console.log('Community');
+        navigation.navigate('CommunityDecks');
       },
       component: props => <CommunityIcon {...props} />,
     },
@@ -67,14 +79,13 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
     },
     deck_cover: {
       onPress: () => {
-        // TODO: navigate to deck cover
-        console.log('Deck Cover');
+        navigation.navigate('DeckCover');
       },
       component: props => <DeckCoverIcon {...props} />,
     },
   };
 
-  const renderButton = (option: ButtonOptions) => {
+  const renderButton = (option: SearchBarButtonOptions) => {
     const IconButton = buttons[option].component;
     const onPress = buttons[option].onPress;
 
@@ -116,6 +127,8 @@ export default function SearchBar({ showMenu, rightButtons = [] }: SearchBarProp
 
       <TextInput
         placeholder={t('search')}
+        value={text}
+        onChangeText={onChangeText}
         placeholderTextColor={theme.colors.text_default}
         style={{
           flex: 1,

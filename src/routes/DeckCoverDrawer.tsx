@@ -4,19 +4,13 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerFilters from '@shared/components/DrawerFilters';
 import EditDeck from '@features/decks/screens/EditDeck';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { IDeckType } from '@shared/types/cards.types';
 import { DefaultStackParamList } from './Default.routes';
-
-export type EditDeckProps = {
-  disableEdit?: boolean;
-};
-
-type PageProps = NativeStackScreenProps<DefaultStackParamList, 'EditDeck'>;
+import DeckCover from '@features/decks/screens/DeckCover';
 
 const RightDrawer = createDrawerNavigator();
 
-export default function RightDrawerScreen({ route }: PageProps) {
-  const params = route.params;
-
+export default function RightDrawerScreen() {
   return (
     <RightDrawer.Navigator
       screenOptions={{
@@ -28,11 +22,7 @@ export default function RightDrawerScreen({ route }: PageProps) {
         swipeEnabled: false,
       }}
       drawerContent={() => <DrawerFilters />}>
-      <RightDrawer.Screen
-        name="EditDeckDrawer"
-        initialParams={{ ...params }}
-        component={EditDeck}
-      />
+      <RightDrawer.Screen name="DeckCoverDrawer" component={DeckCover} />
     </RightDrawer.Navigator>
   );
 }

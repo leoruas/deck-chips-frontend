@@ -1,29 +1,158 @@
+import { getCardByCode } from '@app/api/services/cards/get-card-by-code.service';
+import { DefaultStackParamList } from '@app/routes/Default.routes';
 import { theme } from '@app/theme';
 import DeckAppBar from '@features/decks/components/DeckAppBar';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Box } from '@shared/components/layout/Box';
 import Divider from '@shared/components/layout/Divider';
 import { SafeAreaBox } from '@shared/components/layout/SafeAreaBox';
 import Text from '@shared/components/Text';
 import { getRarityInfo, getRegionInfo, getTypeInfo } from '@shared/helpers/get-filter-info';
 import { normalize } from '@shared/helpers/normalize-pixels';
-import React from 'react';
+import { IGetCardResponse } from '@shared/types/cards.types';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, ScrollView, StatusBar } from 'react-native';
+import { ActivityIndicator, Dimensions, ScrollView, StatusBar } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { CounterWrapper, EssenceImage } from './styles';
 
 const WIDTH = Dimensions.get('window').width;
 
-export default function DeckInfo() {
+export type DeckInfoProps = {
+  deckCards: string[];
+  deckTitle: string;
+};
+
+type CardWithAmount = {
+  card: IGetCardResponse;
+  amount: number;
+};
+
+type PageProps = NativeStackScreenProps<DefaultStackParamList, 'DeckCards'>;
+
+export default function DeckInfo({ route }: PageProps) {
   const { t } = useTranslation('deck_info');
-  const data = {
-    labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+  const { deckCards, deckTitle } = route.params;
+  const [cards, setCards] = useState<CardWithAmount[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [graphData, setGraphData] = useState({
+    labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     datasets: [
       {
-        data: [5, 8, 3, 5, 8, 9, 3, 5, 8, 9],
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       },
     ],
+  });
+
+  const generateGraphData = (cardsData: CardWithAmount[]) => {
+    const labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+
+    const data = labels.map(label => {
+      const cardsOfCost =
+        label === '10'
+          ? cardsData.filter(card => card.card.cost >= parseInt(label))
+          : cardsData.filter(card => {
+              return card.card.cost === parseInt(label);
+            });
+
+      return cardsOfCost.reduce((a, b) => a + b.amount, 0);
+    });
+    setGraphData({
+      labels,
+      datasets: [
+        {
+          data,
+        },
+      ],
+    });
   };
+
+  const countOccurrences = (arr: any[], val: any) =>
+    arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
+  const fetchCards = async () => {
+    setLoading(true);
+    const arr: CardWithAmount[] = [];
+
+    const unique = [...new Set(deckCards)];
+    for (let index: number = 0; index < unique.length; index++) {
+      const ref = unique[index];
+      const card = await getCardByCode(ref);
+      if (!card) return;
+      arr.push({
+        card,
+        amount: countOccurrences(deckCards, ref),
+      });
+    }
+
+    setCards(arr);
+    generateGraphData(arr);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchCards();
+  }, []);
+
+  const spellsAmount = useMemo(() => {
+    if (!cards.length) return 0;
+
+    const totalCards = cards.filter(({ card }) => card.type === 'Spell');
+
+    return totalCards.reduce((a, b) => a + b.amount, 0);
+  }, [cards]);
+
+  const championsAmount = useMemo(() => {
+    if (!cards.length) return 0;
+
+    const totalCards = cards.filter(
+      ({ card }) => card.type === 'Unit' && card.rarityRef === 'Champion',
+    );
+
+    return totalCards.reduce((a, b) => a + b.amount, 0);
+  }, [cards]);
+
+  const unitsAmount = useMemo(() => {
+    if (!cards.length) return 0;
+
+    const totalCards = cards.filter(
+      ({ card }) => card.type === 'Unit' && card.rarityRef !== 'Champion',
+    );
+
+    return totalCards.reduce((a, b) => a + b.amount, 0);
+  }, [cards]);
+
+  const landmarksAmount = useMemo(() => {
+    if (!cards.length) return 0;
+
+    const totalCards = cards.filter(({ card }) => card.type === 'Landmark');
+
+    return totalCards.reduce((a, b) => a + b.amount, 0);
+  }, [cards]);
+
+  const commonsAmount = useMemo(() => {
+    if (!cards.length) return 0;
+
+    const totalCards = cards.filter(({ card }) => card.rarityRef === 'Common');
+
+    return totalCards.reduce((a, b) => a + b.amount, 0);
+  }, [cards]);
+
+  const raresAmount = useMemo(() => {
+    if (!cards.length) return 0;
+
+    const totalCards = cards.filter(({ card }) => card.rarityRef === 'Rare');
+
+    return totalCards.reduce((a, b) => a + b.amount, 0);
+  }, [cards]);
+
+  const epicsAmount = useMemo(() => {
+    if (!cards.length) return 0;
+
+    const totalCards = cards.filter(({ card }) => card.rarityRef === 'Epic');
+
+    return totalCards.reduce((a, b) => a + b.amount, 0);
+  }, [cards]);
 
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
@@ -31,68 +160,85 @@ export default function DeckInfo() {
 
       <Box flex={1} px="md">
         <ScrollView showsVerticalScrollIndicator={false}>
-          <DeckAppBar title={'Deck Name'} />
+          <DeckAppBar title={deckTitle} />
           <Divider my="md" />
-          <Box flexDirection="row" alignItems="center" mt="md">
-            <Text variant="title" mr="lg">
-              {t('mana_cost')}
-            </Text>
-            <FlexDivider />
-          </Box>
-          <BarChart
-            style={{
-              marginLeft: normalize(-50),
-            }}
-            fromZero
-            data={data}
-            width={WIDTH}
-            height={220}
-            yAxisLabel=""
-            yAxisSuffix=""
-            chartConfig={{
-              backgroundGradientFrom: 'transparent',
-              backgroundGradientFromOpacity: 0,
-              backgroundGradientTo: 'transparent',
-              backgroundGradientToOpacity: 0,
-              color: () => `rgba(107, 189, 226)`,
-              labelColor: () => theme.colors.text_default,
-              propsForLabels: {
-                fontSize: normalize(20),
-              },
-              barPercentage: 0.8,
-              fillShadowGradientToOpacity: 0.7,
-              fillShadowGradientFromOpacity: 1,
-            }}
-            withHorizontalLabels={false}
-            showValuesOnTopOfBars
-            withInnerLines={false}
-          />
 
-          <Box flexDirection="row" alignItems="center" mt="md">
+          {loading ? (
+            <Box flex={1} bg="bg_primary">
+              <ActivityIndicator color={theme.colors.text_default} size="large" />
+            </Box>
+          ) : (
+            <Box>
+              <Box flexDirection="row" alignItems="center" mt="md">
+                <Text variant="title" mr="lg">
+                  {t('mana_cost')}
+                </Text>
+                <FlexDivider />
+              </Box>
+              <BarChart
+                style={{
+                  marginLeft: normalize(-50),
+                }}
+                fromZero
+                data={graphData}
+                width={WIDTH}
+                height={220}
+                yAxisLabel=""
+                yAxisSuffix=""
+                chartConfig={{
+                  backgroundGradientFrom: 'transparent',
+                  backgroundGradientFromOpacity: 0,
+                  backgroundGradientTo: 'transparent',
+                  backgroundGradientToOpacity: 0,
+                  color: () => `rgba(107, 189, 226)`,
+                  labelColor: () => theme.colors.text_default,
+                  propsForLabels: {
+                    fontSize: normalize(20),
+                  },
+                  barPercentage: 0.6,
+                  fillShadowGradientToOpacity: 0.7,
+                  fillShadowGradientFromOpacity: 1,
+                }}
+                withHorizontalLabels={false}
+                showValuesOnTopOfBars
+                withInnerLines={false}
+              />
+
+              {/* <Box flexDirection="row" alignItems="center" mt="md">
             <Text variant="title" mr="lg">
               {t('regions')}
             </Text>
             <FlexDivider />
           </Box>
-          <RenderRegions />
+          <RenderRegions /> */}
 
-          <Box flexDirection="row" alignItems="center" mt="md">
-            <Text variant="title" mr="lg">
-              {t('type')}
-            </Text>
-            <FlexDivider />
-          </Box>
-          <RenderTypes />
+              <Box flexDirection="row" alignItems="center" mt="md">
+                <Text variant="title" mr="lg">
+                  {t('type')}
+                </Text>
+                <FlexDivider />
+              </Box>
+              <RenderTypes
+                championsAmount={championsAmount}
+                unitsAmount={unitsAmount}
+                spellsAmount={spellsAmount}
+                landmarksAmount={landmarksAmount}
+              />
 
-          <Box flexDirection="row" alignItems="center" mt="md">
-            <Text variant="title" mr="lg">
-              {t('rarity')}
-            </Text>
-            <FlexDivider />
-          </Box>
-          <RenderRarities />
+              <Box flexDirection="row" alignItems="center" mt="md">
+                <Text variant="title" mr="lg">
+                  {t('rarity')}
+                </Text>
+                <FlexDivider />
+              </Box>
+              <RenderRarities
+                championsAmount={championsAmount}
+                raresAmount={raresAmount}
+                commonsAmount={commonsAmount}
+                epicsAmount={epicsAmount}
+              />
 
-          <Box flexDirection="row" alignItems="center" mt="md">
+              {/* <Box flexDirection="row" alignItems="center" mt="md">
             <Text variant="title" mr="lg">
               {t('total_cost')}
             </Text>
@@ -101,7 +247,9 @@ export default function DeckInfo() {
           <Box flexDirection="row" alignItems="center" justifyContent="center" my="md">
             <EssenceImage />
             <Text>{t('amount_essences', { amount: 2000 })}</Text>
-          </Box>
+          </Box> */}
+            </Box>
+          )}
         </ScrollView>
       </Box>
     </SafeAreaBox>
@@ -114,65 +262,77 @@ const FlexDivider = () => {
   );
 };
 
-const RenderRegions = () => {
-  const { t } = useTranslation('shared');
+// const RenderRegions = () => {
+//   const { t } = useTranslation('shared');
 
-  const region1 = getRegionInfo('shadow_isles', t);
-  const Region1Icon = region1.icon;
+//   const region1 = getRegionInfo('ShadowIsles', t);
+//   const Region1Icon = region1.icon;
 
-  const region2 = getRegionInfo('freljord', t);
-  const Region2Icon = region2.icon;
+//   const region2 = getRegionInfo('Freljord', t);
+//   const Region2Icon = region2.icon;
 
-  return (
-    <Box flexDirection="row" alignItems="center" my="md" pl="md">
-      <Box flexDirection="row" alignItems="center" my="sm" mx="md" flex={1}>
-        <Box mr="md">
-          <Region1Icon
-            width={normalize(50)}
-            height={normalize(50)}
-            fill={region1.color ?? 'none'}
-          />
-          <CounterWrapper>
-            <Text fontSize={normalize(14)}>20</Text>
-          </CounterWrapper>
-        </Box>
-        <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
-          {region1.label}
-        </Text>
-      </Box>
+//   return (
+//     <Box flexDirection="row" alignItems="center" my="md" pl="md">
+//       <Box flexDirection="row" alignItems="center" my="sm" mx="md" flex={1}>
+//         <Box mr="md">
+//           <Region1Icon
+//             width={normalize(50)}
+//             height={normalize(50)}
+//             fill={region1.color ?? 'none'}
+//           />
+//           <CounterWrapper>
+//             <Text fontSize={normalize(14)}>20</Text>
+//           </CounterWrapper>
+//         </Box>
+//         <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
+//           {region1.label}
+//         </Text>
+//       </Box>
 
-      <Box flexDirection="row" alignItems="center" my="sm" mx="md" flex={1}>
-        <Box mr="md">
-          <Region2Icon
-            width={normalize(50)}
-            height={normalize(50)}
-            fill={region2.color ?? 'none'}
-          />
-          <CounterWrapper>
-            <Text fontSize={normalize(14)}>20</Text>
-          </CounterWrapper>
-        </Box>
-        <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
-          {region2.label}
-        </Text>
-      </Box>
-    </Box>
-  );
+//       <Box flexDirection="row" alignItems="center" my="sm" mx="md" flex={1}>
+//         <Box mr="md">
+//           <Region2Icon
+//             width={normalize(50)}
+//             height={normalize(50)}
+//             fill={region2.color ?? 'none'}
+//           />
+//           <CounterWrapper>
+//             <Text fontSize={normalize(14)}>20</Text>
+//           </CounterWrapper>
+//         </Box>
+//         <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
+//           {region2.label}
+//         </Text>
+//       </Box>
+//     </Box>
+//   );
+// };
+
+type RenderTypesProps = {
+  championsAmount: number;
+  unitsAmount: number;
+  spellsAmount: number;
+  landmarksAmount: number;
 };
 
-const RenderTypes = () => {
+const RenderTypes = ({
+  championsAmount,
+  unitsAmount,
+  spellsAmount,
+  landmarksAmount,
+}: RenderTypesProps) => {
   const { t } = useTranslation('shared');
 
-  const champions = getTypeInfo('champion', t);
+  const champions = getTypeInfo('Champion', t);
   const ChampionsIcon = champions.icon;
 
-  const followers = getTypeInfo('follower', t);
-  const FollowersIcon = followers.icon;
+  const units = getTypeInfo('Unit', t);
+  const UnitsIcon = units.icon;
 
-  const spells = getTypeInfo('spell', t);
+  const spells = getTypeInfo('Spell', t);
   const SpellsIcon = spells.icon;
 
-  const landmarks = getTypeInfo('landmark', t);
+  const landmarks = getTypeInfo('Landmark', t);
   const LandmarksIcon = landmarks.icon;
 
   return (
@@ -186,7 +346,7 @@ const RenderTypes = () => {
               fill={theme.colors.type_color}
             />
             <CounterWrapper>
-              <Text fontSize={normalize(14)}>10</Text>
+              <Text fontSize={normalize(14)}>{championsAmount}</Text>
             </CounterWrapper>
           </Box>
           <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
@@ -196,17 +356,17 @@ const RenderTypes = () => {
 
         <Box flexDirection="row" alignItems="center" my="sm" mx="md" flex={1}>
           <Box mr="md">
-            <FollowersIcon
+            <UnitsIcon
               width={normalize(50)}
               height={normalize(50)}
               fill={theme.colors.type_color}
             />
             <CounterWrapper>
-              <Text fontSize={normalize(14)}>10</Text>
+              <Text fontSize={normalize(14)}>{unitsAmount}</Text>
             </CounterWrapper>
           </Box>
           <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
-            {followers.label}
+            {units.label}
           </Text>
         </Box>
       </Box>
@@ -220,7 +380,7 @@ const RenderTypes = () => {
               fill={theme.colors.type_color}
             />
             <CounterWrapper>
-              <Text fontSize={normalize(14)}>10</Text>
+              <Text fontSize={normalize(14)}>{spellsAmount}</Text>
             </CounterWrapper>
           </Box>
           <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
@@ -236,7 +396,7 @@ const RenderTypes = () => {
               fill={theme.colors.type_color}
             />
             <CounterWrapper>
-              <Text fontSize={normalize(14)}>10</Text>
+              <Text fontSize={normalize(14)}>{landmarksAmount}</Text>
             </CounterWrapper>
           </Box>
           <Text mx="md" numberOfLines={1} fontSize={normalize(20)} flex={1}>
@@ -248,19 +408,31 @@ const RenderTypes = () => {
   );
 };
 
-const RenderRarities = () => {
+type RenderRaritiesProps = {
+  championsAmount: number;
+  commonsAmount: number;
+  raresAmount: number;
+  epicsAmount: number;
+};
+
+const RenderRarities = ({
+  championsAmount,
+  commonsAmount,
+  raresAmount,
+  epicsAmount,
+}: RenderRaritiesProps) => {
   const { t } = useTranslation('shared');
 
-  const champion = getRarityInfo('champion', t);
+  const champion = getRarityInfo('Champion', t);
   const ChampionIcon = champion.icon;
 
-  const common = getRarityInfo('common', t);
+  const common = getRarityInfo('Common', t);
   const CommonIcon = common.icon;
 
-  const rare = getRarityInfo('rare', t);
+  const rare = getRarityInfo('Rare', t);
   const RareIcon = rare.icon;
 
-  const epic = getRarityInfo('epic', t);
+  const epic = getRarityInfo('Epic', t);
   const EpicIcon = epic.icon;
 
   return (
@@ -274,7 +446,7 @@ const RenderRarities = () => {
               fill={theme.colors.type_color}
             />
             <CounterWrapper>
-              <Text fontSize={normalize(14)}>10</Text>
+              <Text fontSize={normalize(14)}>{commonsAmount}</Text>
             </CounterWrapper>
           </Box>
           <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
@@ -286,7 +458,7 @@ const RenderRarities = () => {
           <Box mr="md">
             <RareIcon width={normalize(50)} height={normalize(50)} fill={theme.colors.type_color} />
             <CounterWrapper>
-              <Text fontSize={normalize(14)}>10</Text>
+              <Text fontSize={normalize(14)}>{raresAmount}</Text>
             </CounterWrapper>
           </Box>
           <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
@@ -300,7 +472,7 @@ const RenderRarities = () => {
           <Box mr="md">
             <EpicIcon width={normalize(50)} height={normalize(50)} fill={theme.colors.type_color} />
             <CounterWrapper>
-              <Text fontSize={normalize(14)}>10</Text>
+              <Text fontSize={normalize(14)}>{epicsAmount}</Text>
             </CounterWrapper>
           </Box>
           <Text mx="md" numberOfLines={2} fontSize={normalize(25)} flex={1}>
@@ -316,7 +488,7 @@ const RenderRarities = () => {
               fill={theme.colors.type_color}
             />
             <CounterWrapper>
-              <Text fontSize={normalize(14)}>10</Text>
+              <Text fontSize={normalize(14)}>{championsAmount}</Text>
             </CounterWrapper>
           </Box>
           <Text mx="md" numberOfLines={1} fontSize={normalize(25)} flex={1}>

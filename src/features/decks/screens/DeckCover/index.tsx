@@ -7,12 +7,16 @@ import Spacer from '@shared/components/layout/Spacer';
 import SearchBar from '@shared/components/SearchBar';
 import { IGetCardResponse } from '@shared/types/cards.types';
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, TextInput } from 'react-native';
 import debounce from 'lodash/debounce';
 import { useFilters } from '@shared/contexts/FilterContext';
 import { useIsFocused } from '@react-navigation/native';
+import { Deck } from '@shared/components/DecksList/styles';
+import { useDeck } from '@shared/contexts/DeckContext';
+import { normalize } from '@shared/helpers/normalize-pixels';
+import { TextInputWrapper } from '@shared/components/TextField/styles';
 
-export default function Home() {
+export default function DeckCover() {
   const [page, setPage] = useState(1);
   const [cards, setCards] = useState<IGetCardResponse[]>([]);
   const [search, setSearch] = useState('');
@@ -20,6 +24,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const { currentFilterOption, currentFilterValue, resetFilters } = useFilters();
   const isFocused = useIsFocused();
+  const { deck, setDeckTitle } = useDeck();
 
   const fetchCards = async (pageNum: number, name: string) => {
     setIsLoading(true);
@@ -67,16 +72,34 @@ export default function Home() {
       <StatusBar backgroundColor={theme.colors.bg_primary} />
 
       <Box flex={1} px="md">
-        <SearchBar
-          text={search}
-          onChangeText={onSearchChange}
-          showMenu
-          rightButtons={['community', 'decks', 'filters']}
-        />
+        <SearchBar text={search} onChangeText={onSearchChange} rightButtons={['filters']} />
 
         <Spacer height={12} />
 
-        <CardsList cards={cards} onEndReached={onEndReached} isLoading={isLoading} />
+        <CardsList cards={cards} onEndReached={onEndReached} isLoading={isLoading} selectable />
+
+        <Box
+          position="absolute"
+          style={{
+            bottom: normalize(10),
+            width: '100%',
+            left: '3%',
+          }}>
+          <TextInputWrapper noFlex>
+            <TextInput
+              value={deck?.title}
+              onChangeText={setDeckTitle}
+              placeholderTextColor={theme.colors.text_default}
+              style={{
+                fontSize: normalize(27),
+                color: theme.colors.text_default,
+                fontFamily: 'Univers-Condensed',
+                letterSpacing: normalize(1.5),
+                marginHorizontal: normalize(8),
+              }}
+            />
+          </TextInputWrapper>
+        </Box>
       </Box>
     </SafeAreaBox>
   );
