@@ -11,8 +11,9 @@ import { normalize } from '@shared/helpers/normalize-pixels';
 import { Box } from '@shared/components/layout/Box';
 import DecksList from '@shared/components/DecksList';
 import { getCards } from '@app/api/services/cards/get-cards.service';
-import { IGetCardResponse } from '@shared/types/cards.types';
+import { IDeckType, IGetCardResponse } from '@shared/types/cards.types';
 import { debounce } from 'lodash';
+import { getDecks } from '@app/api/services/decks/get-decks.service';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -20,6 +21,20 @@ export default function MyFavorites() {
   const { t } = useTranslation('favorites');
   const [cards, setCards] = useState<IGetCardResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [decks, setDecks] = useState<IDeckType[]>([]);
+  const [isLoadingDecks, setIsLoadingDecks] = useState(false);
+
+  const fetchDecks = async () => {
+    setIsLoading(true);
+    const decks = await getDecks({});
+
+    setDecks(decks);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchDecks();
+  }, []);
 
   const fetchCards = async (pageNum: number) => {
     setIsLoading(true);
@@ -69,7 +84,10 @@ export default function MyFavorites() {
             )}
           />
 
-          <Tab.Screen name={t('decks')} children={() => <DecksList />} />
+          <Tab.Screen
+            name={t('decks')}
+            children={() => <DecksList decks={decks} isLoading={isLoadingDecks} communityView />}
+          />
         </Tab.Navigator>
       </Box>
     </SafeAreaBox>
