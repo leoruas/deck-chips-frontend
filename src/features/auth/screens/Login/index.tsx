@@ -1,6 +1,5 @@
 import { theme } from '@app/theme';
 import { useNavigation } from '@react-navigation/native';
-import { Box } from '@shared/components/layout/Box';
 import GradientBox from '@shared/components/layout/GradientBox';
 import { SafeAreaBox } from '@shared/components/layout/SafeAreaBox';
 import Spacer from '@shared/components/layout/Spacer';
@@ -8,11 +7,12 @@ import Loader from '@shared/components/Loader';
 import Text from '@shared/components/Text';
 import TextField from '@shared/components/TextField';
 import { normalize } from '@shared/helpers/normalize-pixels';
+import { useAuth } from '@shared/contexts/AuthContext';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatusBar } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { FacebookLogoImage, GoogleLogoImage, ImageWrapper, LoginButton, LogoImage } from './styles';
+import { LoginButton, LogoImage } from './styles';
 
 export default function Login() {
   const { t } = useTranslation('login');
@@ -20,6 +20,7 @@ export default function Login() {
 
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { setIsLoggedIn, setAuthData } = useAuth();
 
   return (
     <SafeAreaBox flex={1} bg="bg_primary">
@@ -51,6 +52,7 @@ export default function Login() {
               setTimeout(() => {
                 setIsLoading(false);
                 if (!email.length) return;
+                setAuthData({ email });
                 navigation.navigate('LoginPassword', {
                   email,
                 });
@@ -58,29 +60,6 @@ export default function Login() {
             }}>
             <Text variant="button_label">{t('login')}</Text>
           </LoginButton>
-
-          <Spacer height={50} />
-
-          <Box
-            flexDirection="row"
-            justifyContent="space-around"
-            style={{ paddingHorizontal: normalize(50) }}>
-            <ImageWrapper
-              onPress={() => {
-                //TODO: Implement google login
-                console.log('Google Login');
-              }}>
-              <GoogleLogoImage />
-            </ImageWrapper>
-
-            <ImageWrapper
-              onPress={() => {
-                //TODO: Implement facebook login
-                console.log('Facebook Login');
-              }}>
-              <FacebookLogoImage />
-            </ImageWrapper>
-          </Box>
 
           <Spacer height={50} />
 
@@ -101,6 +80,14 @@ export default function Login() {
             onPress={() => {
               //TODO: Add navigation to home page
               console.log('Join As Guest');
+
+              setIsLoading(true);
+
+              setTimeout(() => {
+                setIsLoading(false);
+                setIsLoggedIn(true);
+                navigation.navigate('Home');
+              }, 1500);
             }}>
             {t('join_as_guest')}
           </Text>

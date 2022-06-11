@@ -21,6 +21,7 @@ export default function DrawerMenu() {
   const { t } = useTranslation('home');
   const { setIsLoggedIn } = useAuth();
   const navigation = useNavigation();
+  const { authData } = useAuth();
 
   return (
     <GradientBox flex={1} py="lg" px="md">
@@ -34,8 +35,8 @@ export default function DrawerMenu() {
         <Box ml="md">
           {/* TODO: Add username and email */}
           <Text numberOfLines={1}>Username</Text>
-          <Text numberOfLines={1} fontSize={normalize(18)}>
-            email@email.com
+          <Text numberOfLines={1} fontSize={normalize(14)}>
+            {authData?.email}
           </Text>
         </Box>
       </Box>

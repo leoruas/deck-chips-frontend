@@ -1,6 +1,5 @@
 import { theme } from '@app/theme';
 import { useNavigation } from '@react-navigation/native';
-import { Box } from '@shared/components/layout/Box';
 import GradientBox from '@shared/components/layout/GradientBox';
 import { SafeAreaBox } from '@shared/components/layout/SafeAreaBox';
 import Spacer from '@shared/components/layout/Spacer';
@@ -13,7 +12,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StatusBar } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { FacebookLogoImage, GoogleLogoImage, ImageWrapper, LoginButton, LogoImage } from './styles';
+import { LoginButton, LogoImage } from './styles';
 
 export default function Login() {
   const { t } = useTranslation('signup');
@@ -76,29 +75,6 @@ export default function Login() {
             }}>
             {t('already_have_account')}
           </Text>
-
-          <Spacer height={50} />
-
-          <Box
-            flexDirection="row"
-            justifyContent="space-around"
-            style={{ paddingHorizontal: normalize(50) }}>
-            <ImageWrapper
-              onPress={() => {
-                //TODO: Implement google login
-                console.log('Google Login');
-              }}>
-              <GoogleLogoImage />
-            </ImageWrapper>
-
-            <ImageWrapper
-              onPress={() => {
-                //TODO: Implement facebook login
-                console.log('Facebook Login');
-              }}>
-              <FacebookLogoImage />
-            </ImageWrapper>
-          </Box>
         </GradientBox>
       </KeyboardAwareScrollView>
     </SafeAreaBox>
