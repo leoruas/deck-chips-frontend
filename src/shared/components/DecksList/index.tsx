@@ -55,7 +55,7 @@ export default function DecksList({ communityView }: DeckListProps) {
                 onPress={() => {
                   setDeck(item);
                   navigation.navigate('EditDeck', {
-                    disableEdit: true,
+                    disableEdit: communityView ? true : false,
                   });
                 }}>
                 <Box my="sm">

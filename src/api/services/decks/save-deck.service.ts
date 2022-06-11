@@ -1,5 +1,4 @@
 import api from '@app/api/api';
-import { IDeckType } from '@shared/types/cards.types';
 
 type SaveDeckProps = {
   title: string;
@@ -8,7 +7,6 @@ type SaveDeckProps = {
 };
 export const saveDeck = async ({ ...params }: SaveDeckProps) => {
   try {
-    console.log(params);
     await api.post(`decks/`, {
       ...params,
     });

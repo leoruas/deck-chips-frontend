@@ -21,6 +21,7 @@ import { saveDeck } from '@app/api/services/decks/save-deck.service';
 import Loader from '@shared/components/Loader';
 import { DefaultStackParamList } from '@app/routes/Default.routes';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { updateDeck } from '@app/api/services/decks/update-deck.service';
 
 type PageProps = NativeStackScreenProps<DefaultStackParamList, 'EditDeck'>;
 
@@ -123,6 +124,7 @@ export default function EditDeck({ route }: PageProps) {
         </BottomBarTextButton>
         <SaveButtonWrapper
           onPress={async () => {
+            console.log('here', disableEdit);
             if (disableEdit) {
               return;
             }
@@ -134,11 +136,21 @@ export default function EditDeck({ route }: PageProps) {
             }
             const coverCardCode =
               deck?.coverCardCode === '' ? deckCards[0] : deck?.coverCardCode ?? '';
-            await saveDeck({
-              title: deck?.title ?? 'New Deck',
-              coverCardCode,
-              cards: deckCards,
-            });
+
+            if (deck?._id) {
+              await updateDeck({
+                id: deck._id,
+                title: deck?.title ?? 'New Deck',
+                coverCardCode,
+                cards: deckCards.slice(0, 40),
+              });
+            } else {
+              await saveDeck({
+                title: deck?.title ?? 'New Deck',
+                coverCardCode,
+                cards: deckCards.slice(0, 40),
+              });
+            }
             setIsLoading(false);
             navigation.goBack();
           }}>
