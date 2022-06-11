@@ -86,7 +86,6 @@ export default function Login() {
               setTimeout(() => {
                 setIsLoading(false);
                 setIsLoggedIn(true);
-                navigation.navigate('Home');
               }, 1500);
             }}>
             {t('join_as_guest')}
