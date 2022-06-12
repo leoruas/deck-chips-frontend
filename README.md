@@ -74,7 +74,12 @@ Deck Chips Server: https://github.com/octaviomuller/deck-chips-server
 </p>
 
 ## Como Utilizar
-Antes de começar a utilizar o projeto, certifique-se de que o [Yarn](https://classic.yarnpkg.com/lang/en/docs/install) está devidamente instalado na máquina. 
+Antes de começar a utilizar o projeto, certifique-se de que os seguintes estejam devidamente intalados e configurados:
+- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install)
+- [Android SDK](https://developer.android.com/studio?hl=pt&gclsrc=ds&gclsrc=ds)
+- [Platform tools](https://developer.android.com/studio/command-line/adb?hl=pt-br)/Android Debug Bridge
+
+Obs.: É suportado apenas o Android 11, para configurar no Android Studio vá em `SDK Manager > SDK Platforms > Android 11`. Também é recomendado marcar as opções `SDK Manager > SDK Platforms > Android API 33` e `SDK Manager > SDK Tools > Android SDK Build-tools 33`
 
 Em seguida, em um terminal clone o repositório no local desejado com:
 ```
